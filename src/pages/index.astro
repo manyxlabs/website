@@ -1,7 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
 import { tools } from '../data/tools';
-import { CALENDLY, EMAIL, FOUNDER, GITHUB } from '../site';
+import { CALENDLY, EMAIL } from '../site';
 
 const suggest = `mailto:${EMAIL}?subject=${encodeURIComponent('Tool idea')}`;
 
@@ -17,28 +19,7 @@ const principles = [
   title="Manyx Labs - Boring software, built well"
   description="Small, simple tools for everyday jobs. No signup, no ads, and private by default. Built in Bengaluru."
 >
-  <header class="wrap top">
-    <a href="/" class="brand" aria-label="Manyx Labs home">
-      <svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true">
-        <defs>
-          <mask id="mx" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48">
-            <rect width="48" height="48" fill="#fff"></rect>
-            <circle cx="24" cy="24" r="9" fill="#000"></circle>
-          </mask>
-        </defs>
-        <g mask="url(#mx)" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round">
-          <path d="M9 9 C 22 20, 26 28, 39 39"></path>
-          <path d="M39 9 C 26 20, 22 28, 9 39"></path>
-        </g>
-        <circle cx="24" cy="24" r="5" fill="var(--accent)"></circle>
-      </svg>
-      Manyx Labs
-    </a>
-    <nav aria-label="Main">
-      <a href="#tools">Tools</a>
-      <a href="#teams">For teams</a>
-    </nav>
-  </header>
+  <Header />
 
   <main>
     <section class="wrap hero">
@@ -104,49 +85,10 @@ const principles = [
     </section>
   </main>
 
-  <footer class="wrap">
-    <div class="foot">
-      <p>&copy; {new Date().getFullYear()} Manyx Labs, Bengaluru</p>
-      <nav aria-label="Elsewhere">
-        <a href={GITHUB}>GitHub</a>
-        <a href={FOUNDER}>Founder</a>
-        <a href={`mailto:${EMAIL}`}>Email</a>
-      </nav>
-    </div>
-  </footer>
+  <Footer />
 </Base>
 
 <style>
-  .top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-block: 20px;
-  }
-
-  .brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 650;
-    letter-spacing: -0.01em;
-    text-decoration: none;
-  }
-
-  nav {
-    display: flex;
-    gap: 20px;
-  }
-
-  nav a {
-    color: var(--muted);
-    font-size: 0.9375rem;
-    text-decoration: none;
-  }
-
-  nav a:hover {
-    color: var(--text);
-  }
 
   main > section {
     padding-block: 48px;
@@ -185,33 +127,6 @@ const principles = [
     flex-wrap: wrap;
     gap: 12px;
     margin-top: 32px;
-  }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding-inline: 20px;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    font-size: 0.9375rem;
-    font-weight: 550;
-    text-decoration: none;
-    overflow-wrap: anywhere;
-  }
-
-  .btn:hover {
-    border-color: var(--muted);
-  }
-
-  .btn.primary {
-    border-color: var(--accent);
-    background: var(--accent);
-    color: var(--on-accent);
-  }
-
-  .btn.primary:hover {
-    filter: brightness(1.08);
   }
 
   .grid {
@@ -332,14 +247,4 @@ const principles = [
     color: var(--muted);
   }
 
-  .foot {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px 24px;
-    justify-content: space-between;
-    padding-block: 32px 40px;
-    border-top: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 0.875rem;
-  }
 </style>
