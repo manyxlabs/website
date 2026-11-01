@@ -2,17 +2,22 @@
 import Base from '../layouts/Base.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import { exams, kbRange } from '../data/formSpecs';
 import { tools } from '../data/tools';
 import { organization } from '../seo';
 import { CALENDLY, EMAIL } from '../site';
 
 const suggest = `mailto:${EMAIL}?subject=${encodeURIComponent('Tool idea')}`;
+// The hero shows what the resizer hands back for a real preset.
+const exam = exams[0]!;
+const sample = exam.specs[0]!;
 
+// 24px line icons, stroked in the accent colour.
 const principles = [
-  ['One job, done well', 'Each tool fixes one everyday problem, without the clutter.'],
-  ['No signup', 'Open it and use it. No account, no email wall.'],
-  ['Private by default', 'If a tool can run in your browser, it does, so your files stay with you.'],
-  ['No ads, no tricks', 'No pop-ups, no fake download buttons, no upsell traps.'],
+  ['One job, done well', 'Each tool fixes one everyday problem, without the clutter.', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 5a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z'],
+  ['No signup', 'Open it and use it. No account, no email wall.', 'M5 12.5l4.5 4.5L19 7.5'],
+  ['Private by default', 'If a tool can run in your browser, it does, so your files stay with you.', 'M8 11V8a4 4 0 0 1 8 0v3M6 11h12v9H6z'],
+  ['No ads, no tricks', 'No pop-ups, no fake download buttons, no upsell traps.', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM5.6 5.6l12.8 12.8'],
 ];
 ---
 
@@ -25,24 +30,106 @@ const principles = [
 
   <main>
     <section class="wrap hero">
-      <p class="eyebrow">Made in Bengaluru</p>
-      <h1>Boring software,<br />built well.</h1>
-      <p class="lede">
-        Small tools for the everyday jobs that shouldn't be a fight. No signup, no ads, and your files stay on
-        your device wherever possible.
-      </p>
-      <div class="actions">
-        <a class="btn primary" href="#tools">See the tools</a>
-        <a class="btn" href={suggest}>Suggest a tool</a>
+      <div>
+        <p class="eyebrow">Made in Bengaluru</p>
+        <h1>Boring software,<br />built well.</h1>
+        <p class="lede">
+          Small tools for the everyday jobs that shouldn't be a fight. No signup, no ads, and your files stay on
+          your device wherever possible.
+        </p>
+        <div class="actions">
+          <a class="btn primary" href="#tools">See the tools</a>
+          <a class="btn" href={suggest}>Suggest a tool</a>
+        </div>
       </div>
+
+      <a class="preview" href={`/tools/photo-resizer/?preset=${sample.id}`} aria-label="Open the photo resizer">
+        <span class="preview-top"><span class="dot"></span>{exam.name} {sample.label.toLowerCase()}</span>
+        <span class="frame" aria-hidden="true">
+          <svg viewBox="0 0 200 230">
+            <defs>
+              <linearGradient id="hero-bg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#eef3f8"></stop>
+                <stop offset="1" stop-color="#d5e0eb"></stop>
+              </linearGradient>
+            </defs>
+            <rect width="200" height="230" fill="url(#hero-bg)"></rect>
+            <path d="M28 230c4-44 34-64 72-64s68 20 72 64z" fill="#3f5568"></path>
+            <ellipse cx="100" cy="98" rx="38" ry="46" fill="#c99a7a"></ellipse>
+            <path d="M62 92c0-34 18-52 38-52s38 18 38 52c-8-16-22-24-38-24s-30 8-38 24z" fill="#2b2420"></path>
+          </svg>
+          <span class="mark w">{sample.width} px</span>
+          <span class="mark h">{sample.height} px</span>
+        </span>
+        <span class="facts">
+          <span><small>Size</small>{sample.width} × {sample.height}</span>
+          <span><small>File</small>41.6 KB</span>
+          <span><small>Format</small>JPG</span>
+        </span>
+        <span class="ok">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+          Within {kbRange(sample)}. Ready to upload.
+        </span>
+      </a>
+    </section>
+
+    <section class="wrap" id="tools" aria-labelledby="tools-h">
+      <div class="section-head">
+        <h2 id="tools-h">Tools</h2>
+        <p>Free, no signup, and nothing leaves your device.</p>
+      </div>
+      <ul class="tools">
+        {
+          tools.map((tool) => (
+            <li class:list={['card', tool.status]}>
+              <span class:list={['badge', tool.status]}>{tool.status === 'live' ? 'Live' : 'In progress'}</span>
+              <h3>{tool.status === 'live' ? <a href={tool.href}>{tool.name}</a> : tool.name}</h3>
+              <p>{tool.summary}</p>
+              {tool.status === 'live' && tool.links && (
+                <p class="links">
+                  Size guides:{' '}
+                  {tool.links.map((l, i) => (
+                    <>
+                      {i > 0 && ' · '}
+                      <a href={l.href}>{l.label}</a>
+                    </>
+                  ))}
+                </p>
+              )}
+              <div class="card-foot">
+                {tool.note && <p class="note">{tool.note}</p>}
+                {tool.status === 'live' && (
+                  <a class="btn primary small" href={tool.href}>
+                    Open &rarr;
+                  </a>
+                )}
+              </div>
+            </li>
+          ))
+        }
+        <li class="card ghost">
+          <h3>What annoys you every day?</h3>
+          <p>Tell us the chore. If a small tool can fix it, it goes on the list.</p>
+          <div class="card-foot">
+            <a class="link" href={suggest}>Suggest a tool &rarr;</a>
+          </div>
+        </li>
+      </ul>
     </section>
 
     <section class="wrap" aria-labelledby="how">
-      <h2 id="how" class="label">How we build</h2>
-      <ul class="grid principles">
+      <div class="section-head">
+        <h2 id="how">How we build</h2>
+      </div>
+      <ul class="principles">
         {
-          principles.map(([title, body]) => (
+          principles.map(([title, body, icon]) => (
             <li>
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                  <path d={icon} />
+                </svg>
+              </span>
               <h3>{title}</h3>
               <p>{body}</p>
             </li>
@@ -51,30 +138,10 @@ const principles = [
       </ul>
     </section>
 
-    <section class="wrap" id="tools" aria-labelledby="tools-h">
-      <h2 id="tools-h" class="label">Tools</h2>
-      <ul class="grid tools">
-        {
-          tools.map((tool) => (
-            <li class="card">
-              <span class:list={['badge', tool.status]}>{tool.status === 'live' ? 'Live' : 'In progress'}</span>
-              <h3>{tool.status === 'live' ? <a href={tool.href}>{tool.name}</a> : tool.name}</h3>
-              <p>{tool.summary}</p>
-              {tool.note && <p class="note">{tool.note}</p>}
-            </li>
-          ))
-        }
-        <li class="card ghost">
-          <h3>What annoys you every day?</h3>
-          <p>Tell us the chore. If a small tool can fix it, it goes on the list.</p>
-          <a class="link" href={suggest}>Suggest a tool &rarr;</a>
-        </li>
-      </ul>
-    </section>
-
     <section class="wrap" id="teams" aria-labelledby="teams-h">
       <div class="teams">
-        <h2 id="teams-h">We also build for teams</h2>
+        <p class="eyebrow">For teams</p>
+        <h2 id="teams-h">Engineering AI that holds up in production.</h2>
         <p>
           Behind the tools is an applied AI studio. We design and ship production AI systems: multi-agent
           workflows, retrieval and evals, built to behave the same in production as in the demo.
@@ -91,17 +158,37 @@ const principles = [
 </Base>
 
 <style>
-
   main > section {
-    padding-block: 48px;
+    padding-block: 40px;
   }
 
   .hero {
-    padding-block: 72px 56px;
+    position: relative;
+    display: grid;
+    gap: 48px;
+    align-items: center;
+    padding-block: 56px 48px;
   }
 
-  .eyebrow,
-  .label {
+  /* A soft accent glow behind the preview, so the hero is not a flat slab. */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: -40px 0 auto 35%;
+    height: 560px;
+    background: radial-gradient(closest-side, var(--accent-soft), transparent);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  @media (min-width: 880px) {
+    .hero {
+      grid-template-columns: 1.4fr 1fr;
+      padding-block: 80px 64px;
+    }
+  }
+
+  .eyebrow {
     color: var(--accent);
     font-size: 0.8125rem;
     font-weight: 600;
@@ -111,14 +198,14 @@ const principles = [
 
   h1 {
     margin-top: 16px;
-    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-size: clamp(2.5rem, 6vw, 4rem);
     font-weight: 700;
-    line-height: 1.05;
+    line-height: 1.04;
     letter-spacing: -0.035em;
   }
 
   .lede {
-    max-width: 34rem;
+    max-width: 32rem;
     margin-top: 20px;
     color: var(--muted);
     font-size: 1.125rem;
@@ -131,33 +218,150 @@ const principles = [
     margin-top: 32px;
   }
 
-  .grid {
+  .preview {
     display: grid;
     gap: 16px;
-    margin: 20px 0 0;
+    justify-self: center;
+    width: min(100%, 340px);
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--surface);
+    box-shadow: 0 24px 60px -28px rgb(0 0 0 / 0.35);
+    text-decoration: none;
+    transition: transform 0.2s;
+  }
+
+  .preview:hover {
+    transform: translateY(-2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .preview {
+      transition: none;
+    }
+  }
+
+  .preview-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 0.8125rem;
+    font-weight: 550;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--accent);
+  }
+
+  /* Room on the right and below for the dimension marks. */
+  .frame {
+    position: relative;
+    justify-self: center;
+    width: 62%;
+    margin: 4px 24px 22px 0;
+  }
+
+  .frame svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 0 0 1px var(--border);
+  }
+
+  .mark {
+    position: absolute;
+    color: var(--muted);
+    font-size: 0.6875rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .mark.w {
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+
+  .mark.h {
+    top: 50%;
+    left: calc(100% + 16px);
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .facts > span {
+    display: grid;
+    gap: 2px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: var(--bg);
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .facts small {
+    color: var(--muted);
+    font-size: 0.6875rem;
+    font-weight: 500;
+  }
+
+  .ok {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent);
+    font-size: 0.875rem;
+    font-weight: 550;
+  }
+
+  .ok svg,
+  .icon svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .section-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px 24px;
+  }
+
+  .section-head h2,
+  .teams h2 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 680;
+    letter-spacing: -0.025em;
+  }
+
+  .section-head p {
+    color: var(--muted);
+  }
+
+  .tools,
+  .principles {
+    display: grid;
+    gap: 16px;
+    margin: 24px 0 0;
     padding: 0;
     list-style: none;
-  }
-
-  .principles {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  }
-
-  .principles li {
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
-  }
-
-  h3 {
-    font-size: 1.0625rem;
-    font-weight: 620;
-    letter-spacing: -0.01em;
-  }
-
-  .principles p,
-  .card p {
-    margin-top: 6px;
-    color: var(--muted);
   }
 
   .tools {
@@ -174,6 +378,16 @@ const principles = [
     background: var(--surface);
   }
 
+  .card.live {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  }
+
+  h3 {
+    font-size: 1.0625rem;
+    font-weight: 620;
+    letter-spacing: -0.01em;
+  }
+
   .card h3 a {
     text-decoration: none;
   }
@@ -182,9 +396,41 @@ const principles = [
     text-decoration: underline;
   }
 
-  .card .note {
+  .card p,
+  .principles p {
+    margin-top: 6px;
+    color: var(--muted);
+  }
+
+  .card .links {
+    margin-top: 12px;
+    font-size: 0.875rem;
+  }
+
+  .links a {
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .card-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
     margin-top: auto;
-    padding-top: 16px;
+    padding-top: 20px;
+  }
+
+  .card-foot .note {
+    margin: 0;
+    font-size: 0.875rem;
+  }
+
+  .btn.small {
+    min-height: 36px;
+    padding-inline: 16px;
     font-size: 0.875rem;
   }
 
@@ -213,8 +459,6 @@ const principles = [
   }
 
   .link {
-    margin-top: auto;
-    padding-top: 16px;
     color: var(--accent);
     font-weight: 550;
     text-decoration: none;
@@ -224,29 +468,51 @@ const principles = [
     text-decoration: underline;
   }
 
+  .principles {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .principles li {
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+  }
+
+  .icon {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    margin-bottom: 14px;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
   .teams {
     padding: 40px 24px;
     border: 1px solid var(--border);
     border-radius: 20px;
-    background: var(--surface);
+    background:
+      radial-gradient(120% 140% at 100% 0%, var(--accent-soft), transparent 60%),
+      var(--surface);
   }
 
   @media (min-width: 640px) {
     .teams {
-      padding: 48px;
+      padding: 56px;
     }
   }
 
   .teams h2 {
-    font-size: clamp(1.5rem, 4vw, 2rem);
-    font-weight: 680;
-    letter-spacing: -0.025em;
+    max-width: 20ch;
+    margin-top: 12px;
   }
 
-  .teams p {
+  .teams p:not(.eyebrow) {
     max-width: 38rem;
     margin-top: 12px;
     color: var(--muted);
   }
-
 </style>
