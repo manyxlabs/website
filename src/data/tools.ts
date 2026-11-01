@@ -10,7 +10,8 @@ export const tools: Tool[] = [
     summary:
       'Get your photo and signature to the exact KB, pixel size and format that exam, passport and bank forms ask for.',
     note: 'Runs in your browser. Nothing is uploaded.',
-    status: 'building',
+    status: 'live',
+    href: '/tools/photo-resizer/',
   },
   {
     name: 'Mutual Fund Screener',
