@@ -1,10 +1,16 @@
-// Cloudflare Workers serves the built site as static assets; there is no Worker code.
+// Serves the built site as static assets. The photo resizer lives in its own repo and
+// Worker; its paths on this host are forwarded to it, so its URLs never changed.
 {
   "name": "website",
+  "main": "worker.ts",
   "compatibility_date": "2026-10-01",
   "assets": {
     "directory": "./dist",
     "not_found_handling": "404-page",
-    "html_handling": "auto-trailing-slash"
-  }
+    "html_handling": "auto-trailing-slash",
+    "run_worker_first": ["/tools/photo-resizer*", "/photo-size*", "/_resizer/*", "/sitemap-resizer-*"]
+  },
+  // The photo-resizer Worker must be deployed before this one: a deploy fails on a
+  // binding to a Worker that does not exist yet.
+  "services": [{ "binding": "RESIZER", "service": "photo-resizer" }]
 }

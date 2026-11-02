@@ -1,5 +1,4 @@
 import { GITHUB } from '../site';
-import { exams } from './formSpecs';
 
 // A live tool must have somewhere to send people; one still being built must not.
 /** `icon` is a 24px stroked SVG path; `tint` the two ends of its tile's gradient. */
@@ -12,7 +11,7 @@ export type Tool = {
   tint: [string, string];
 } & (
   | { status: 'building' }
-  | { status: 'live'; href: string; source?: string; links?: { label: string; href: string }[] }
+  | { status: 'live'; href: string; source?: string }
 );
 
 export const tools: Tool[] = [
@@ -26,8 +25,7 @@ export const tools: Tool[] = [
     note: 'Runs in your browser. Nothing is uploaded.',
     status: 'live',
     href: '/tools/photo-resizer/',
-    source: `${GITHUB}/website`,
-    links: exams.map((e) => ({ label: e.name.replace('PAN card', 'PAN'), href: `/photo-size/${e.id}/` })),
+    source: `${GITHUB}/photo-resizer`,
   },
   {
     name: 'Mutual Fund Screener',

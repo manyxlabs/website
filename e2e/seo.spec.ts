@@ -3,9 +3,15 @@ import { expect, test } from '@playwright/test';
 const SITE = 'https://www.manyxlabs.com';
 
 test('every page in the sitemap is indexable, described and canonical', async ({ page, request }) => {
-  expect(await (await request.get('/robots.txt')).text()).toContain(`Sitemap: ${SITE}/sitemap-index.xml`);
-  const index = await (await request.get('/sitemap-index.xml')).text();
-  const maps = [...index.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]!.replace(SITE, ''));
+  // The website and the photo resizer (its own Worker, forwarded here) each publish one.
+  const robots = await (await request.get('/robots.txt')).text();
+  const indexes = [...robots.matchAll(/^Sitemap: (\S+)$/gm)].map((m) => m[1]!.replace(SITE, ''));
+  expect(indexes).toEqual(['/sitemap-index.xml', '/sitemap-resizer-index.xml']);
+  const maps: string[] = [];
+  for (const index of indexes) {
+    const xml = await (await request.get(index)).text();
+    maps.push(...[...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]!.replace(SITE, '')));
+  }
   const urls: string[] = [];
   for (const map of maps) {
     const xml = await (await request.get(map)).text();

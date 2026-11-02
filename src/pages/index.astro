@@ -82,28 +82,31 @@ const principles = [
                   <span class="category">{tool.category}</span>
                 </span>
               </span>
-              <h3>{tool.status === 'live' ? <a href={tool.href}>{tool.name}</a> : tool.name}</h3>
+              <h3>
+                {tool.status === 'live' ? (
+                  <a href={tool.href} target="_blank" rel="noopener">
+                    {tool.name}
+                  </a>
+                ) : (
+                  tool.name
+                )}
+              </h3>
               <p>{tool.summary}</p>
-              {tool.status === 'live' && tool.links && (
-                <p class="links">
-                  Size guides:{' '}
-                  {tool.links.map((l, i) => (
-                    <>
-                      {i > 0 && ' · '}
-                      <a href={l.href}>{l.label}</a>
-                    </>
-                  ))}
-                </p>
-              )}
               <div class="card-foot">
                 {tool.note && <p class="note">{tool.note}</p>}
                 {tool.status === 'live' && (
                   <span class="card-actions">
-                    <a class="btn primary small" href={tool.href}>
+                    <a class="btn primary small" href={tool.href} target="_blank" rel="noopener">
                       Open {tool.name.split(' ').slice(-1)[0]?.toLowerCase()} &rarr;
                     </a>
                     {tool.source && (
-                      <a class="btn small" href={tool.source} aria-label={`${tool.name} source code on GitHub`}>
+                      <a
+                        class="btn small"
+                        href={tool.source}
+                        target="_blank"
+                        rel="noopener"
+                        aria-label={`${tool.name} source code on GitHub`}
+                      >
                         <svg class="gh" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
                           <path d={GITHUB_MARK} />
                         </svg>
@@ -391,16 +394,6 @@ const principles = [
   .principles p {
     margin-top: 6px;
     color: var(--muted);
-  }
-
-  .card .links {
-    margin-top: 12px;
-    font-size: 0.875rem;
-  }
-
-  .links a {
-    color: var(--text);
-    white-space: nowrap;
   }
 
   .card-foot {

@@ -13,9 +13,4 @@ export default defineConfig({
     sitemap({ filter: (page) => !page.endsWith('/404/') }),
     { name: 'build-id', hooks: { 'astro:build:done': ({ dir }) => writeFileSync(new URL('build.txt', dir), commit) } },
   ],
-  vite: {
-    // The HEIC decoder (libheif, 3 MB) is its own chunk, fetched only when someone picks
-    // a HEIC file; every other chunk is far under the default limit.
-    build: { chunkSizeWarningLimit: 3200 },
-  },
 });
