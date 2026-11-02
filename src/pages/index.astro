@@ -2,87 +2,86 @@
 import Base from '../layouts/Base.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import { exams, kbRange } from '../data/formSpecs';
 import { tools } from '../data/tools';
 import { organization } from '../seo';
 import { CALENDLY, EMAIL } from '../site';
 
-const suggest = `mailto:${EMAIL}?subject=${encodeURIComponent('Tool idea')}`;
-// The hero shows what the resizer hands back for a real preset.
-const exam = exams[0]!;
-const sample = exam.specs[0]!;
+// GitHub's mark, from its Octicons set.
+const GITHUB_MARK =
+  'M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z';
+
+const idea = `mailto:${EMAIL}?subject=${encodeURIComponent('Product idea')}`;
 
 // 24px line icons, stroked in the accent colour.
+const pillars = [
+  [
+    'Applied AI tools',
+    'Assistants and automations that take real work off your plate, tested with evals before they ship.',
+    'M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8zM18 15l.9 2.1L21 18l-2.1.9L18 21l-.9-2.1L15 18l2.1-.9z',
+  ],
+  [
+    'SaaS products',
+    'Focused software for teams and businesses, reliable enough to run every day without babysitting.',
+    'M4 5h16v10H4zM8 19h8M12 15v4',
+  ],
+  [
+    'Everyday utilities',
+    'Free tools for the small chores, like getting a form photo to size or comparing mutual funds.',
+    'M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z',
+  ],
+];
+
 const principles = [
-  ['One job, done well', 'Each tool fixes one everyday problem, without the clutter.', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 5a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z'],
-  ['No signup', 'Open it and use it. No account, no email wall.', 'M5 12.5l4.5 4.5L19 7.5'],
-  ['Private by default', 'If a tool can run in your browser, it does, so your files stay with you.', 'M8 11V8a4 4 0 0 1 8 0v3M6 11h12v9H6z'],
-  ['No ads, no tricks', 'No pop-ups, no fake download buttons, no upsell traps.', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM5.6 5.6l12.8 12.8'],
+  ['Useful first', 'Every product starts from a real problem people hit again and again.', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 5a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z'],
+  ['Private by default', 'If work can run on your device, it does. We never sell your data.', 'M8 11V8a4 4 0 0 1 8 0v3M6 11h12v9H6z'],
+  ['Measured, not guessed', 'AI features are evaluated, so they behave the same in production as in the demo.', 'M5 12.5l4.5 4.5L19 7.5'],
+  ['No dark patterns', 'No pop-ups, no fake download buttons, no upsell traps.', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM5.6 5.6l12.8 12.8'],
 ];
 ---
 
 <Base
-  title="Manyx Labs - Boring software, built well"
-  description="Small, simple tools for everyday jobs. No signup, no ads, and private by default. Built in Bengaluru."
+  title="Manyx Labs - Applied AI, SaaS and everyday software"
+  description="Manyx Labs is a Bengaluru studio building applied AI tools, SaaS products and free everyday utilities. Private by default, no ads, built to last."
   schema={[organization, { '@type': 'WebSite', name: 'Manyx Labs', url: 'https://www.manyxlabs.com/', publisher: { '@id': organization['@id'] } }]}
 >
   <Header />
 
   <main>
     <section class="wrap hero">
-      <div>
-        <p class="eyebrow">Made in Bengaluru</p>
-        <h1>Boring software,<br />built well.</h1>
-        <p class="lede">
-          Small tools for the everyday jobs that shouldn't be a fight. No signup, no ads, and your files stay on
-          your device wherever possible.
-        </p>
-        <div class="actions">
-          <a class="btn primary" href="#tools">See the tools</a>
-          <a class="btn" href={suggest}>Suggest a tool</a>
-        </div>
+      <h1>Software that does the work for you.</h1>
+      <p class="lede">
+        Manyx Labs builds applied AI tools, SaaS products and everyday utilities. Each one does its job properly:
+        fast, private by default, and clear about what it does.
+      </p>
+      <div class="actions">
+        <a class="btn primary" href="#products">See our products</a>
+        <a class="btn" href="#teams">Work with us</a>
       </div>
-
-      <a class="preview" href={`/tools/photo-resizer/?preset=${sample.id}`} aria-label="Open the photo resizer">
-        <span class="preview-top"><span class="dot"></span>{exam.name} {sample.label.toLowerCase()}</span>
-        <span class="frame" aria-hidden="true">
-          <svg viewBox="0 0 200 230">
-            <defs>
-              <linearGradient id="hero-bg" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#eef3f8"></stop>
-                <stop offset="1" stop-color="#d5e0eb"></stop>
-              </linearGradient>
-            </defs>
-            <rect width="200" height="230" fill="url(#hero-bg)"></rect>
-            <path d="M28 230c4-44 34-64 72-64s68 20 72 64z" fill="#3f5568"></path>
-            <ellipse cx="100" cy="98" rx="38" ry="46" fill="#c99a7a"></ellipse>
-            <path d="M62 92c0-34 18-52 38-52s38 18 38 52c-8-16-22-24-38-24s-30 8-38 24z" fill="#2b2420"></path>
-          </svg>
-          <span class="mark w">{sample.width} px</span>
-          <span class="mark h">{sample.height} px</span>
-        </span>
-        <span class="facts">
-          <span><small>Size</small>{sample.width} × {sample.height}</span>
-          <span><small>File</small>41.6 KB</span>
-          <span><small>Format</small>JPG</span>
-        </span>
-        <span class="ok">
-          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
-          Within {kbRange(sample)}. Ready to upload.
-        </span>
-      </a>
     </section>
 
-    <section class="wrap" id="tools" aria-labelledby="tools-h">
+    <section class="wrap" id="products" aria-labelledby="products-h">
       <div class="section-head">
-        <h2 id="tools-h">Tools</h2>
-        <p>Free, no signup, and nothing leaves your device.</p>
+        <div>
+          <p class="eyebrow">Products</p>
+          <h2 id="products-h">Use them today, free.</h2>
+        </div>
+        <p>No signup, no ads. More on the way.</p>
       </div>
       <ul class="tools">
         {
           tools.map((tool) => (
-            <li class:list={['card', tool.status]}>
-              <span class:list={['badge', tool.status]}>{tool.status === 'live' ? 'Live' : 'In progress'}</span>
+            <li class:list={['card', 'glass', tool.status]} style={`--from: ${tool.tint[0]}; --to: ${tool.tint[1]}`}>
+              <span class="top-row">
+                <span class="glyph" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path d={tool.icon} />
+                  </svg>
+                </span>
+                <span class="tags">
+                  <span class:list={['badge', tool.status]}>{tool.status === 'live' ? 'Live' : 'In progress'}</span>
+                  <span class="category">{tool.category}</span>
+                </span>
+              </span>
               <h3>{tool.status === 'live' ? <a href={tool.href}>{tool.name}</a> : tool.name}</h3>
               <p>{tool.summary}</p>
               {tool.status === 'live' && tool.links && (
@@ -99,21 +98,48 @@ const principles = [
               <div class="card-foot">
                 {tool.note && <p class="note">{tool.note}</p>}
                 {tool.status === 'live' && (
-                  <a class="btn primary small" href={tool.href}>
-                    Open &rarr;
-                  </a>
+                  <span class="card-actions">
+                    <a class="btn primary small" href={tool.href}>
+                      Open {tool.name.split(' ').slice(-1)[0]?.toLowerCase()} &rarr;
+                    </a>
+                    {tool.source && (
+                      <a class="btn small" href={tool.source} aria-label={`${tool.name} source code on GitHub`}>
+                        <svg class="gh" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                          <path d={GITHUB_MARK} />
+                        </svg>
+                        Source
+                      </a>
+                    )}
+                  </span>
                 )}
               </div>
             </li>
           ))
         }
-        <li class="card ghost">
-          <h3>What annoys you every day?</h3>
-          <p>Tell us the chore. If a small tool can fix it, it goes on the list.</p>
-          <div class="card-foot">
-            <a class="link" href={suggest}>Suggest a tool &rarr;</a>
-          </div>
-        </li>
+      </ul>
+      <p class="idea">
+        Got a problem worth solving? <a class="link" href={idea}>Share an idea &rarr;</a>
+      </p>
+    </section>
+
+    <section class="wrap" aria-labelledby="build-h">
+      <div class="section-head">
+        <h2 id="build-h">What we build</h2>
+      </div>
+      <ul class="pillars">
+        {
+          pillars.map(([title, body, icon]) => (
+            <li class="glass">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                  <path d={icon} />
+                </svg>
+              </span>
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </li>
+          ))
+        }
       </ul>
     </section>
 
@@ -124,7 +150,7 @@ const principles = [
       <ul class="principles">
         {
           principles.map(([title, body, icon]) => (
-            <li>
+            <li class="glass">
               <span class="icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="20" height="20">
                   <path d={icon} />
@@ -139,12 +165,12 @@ const principles = [
     </section>
 
     <section class="wrap" id="teams" aria-labelledby="teams-h">
-      <div class="teams">
-        <p class="eyebrow">For teams</p>
+      <div class="teams glass">
+        <p class="eyebrow">Work with us</p>
         <h2 id="teams-h">Engineering AI that holds up in production.</h2>
         <p>
-          Behind the tools is an applied AI studio. We design and ship production AI systems: multi-agent
-          workflows, retrieval and evals, built to behave the same in production as in the demo.
+          We also build for other teams: multi-agent workflows, retrieval and evals, designed and shipped so they
+          behave the same in production as in the demo.
         </p>
         <div class="actions">
           <a class="btn primary" href={CALENDLY}>Book a call</a>
@@ -162,29 +188,32 @@ const principles = [
     padding-block: 40px;
   }
 
-  .hero {
-    position: relative;
-    display: grid;
-    gap: 48px;
-    align-items: center;
-    padding-block: 56px 48px;
+  /* In-page links land below the sticky header, not under it. */
+  section[id] {
+    scroll-margin-top: 72px;
   }
 
-  /* A soft accent glow behind the preview, so the hero is not a flat slab. */
+  .hero {
+    position: relative;
+    padding-block: 72px 56px;
+  }
+
+  /* A dotted grid that fades out from the headline, so the hero has depth without a picture. */
   .hero::before {
     content: '';
     position: absolute;
-    inset: -40px 0 auto 35%;
-    height: 560px;
-    background: radial-gradient(closest-side, var(--accent-soft), transparent);
+    inset: -80px 0 0;
+    background:
+      radial-gradient(closest-side at 70% 30%, var(--accent-soft), transparent),
+      radial-gradient(color-mix(in srgb, var(--muted) 30%, transparent) 1px, transparent 1.5px) 0 0 / 24px 24px;
+    mask-image: radial-gradient(ellipse 70% 80% at 60% 30%, #000 30%, transparent 75%);
     pointer-events: none;
     z-index: -1;
   }
 
   @media (min-width: 880px) {
     .hero {
-      grid-template-columns: 1.4fr 1fr;
-      padding-block: 80px 64px;
+      padding-block: 120px 80px;
     }
   }
 
@@ -197,15 +226,15 @@ const principles = [
   }
 
   h1 {
-    margin-top: 16px;
-    font-size: clamp(2.5rem, 6vw, 4rem);
+    max-width: 15ch;
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
     font-weight: 700;
     line-height: 1.04;
     letter-spacing: -0.035em;
   }
 
   .lede {
-    max-width: 32rem;
+    max-width: 36rem;
     margin-top: 20px;
     color: var(--muted);
     font-size: 1.125rem;
@@ -218,116 +247,6 @@ const principles = [
     margin-top: 32px;
   }
 
-  .preview {
-    display: grid;
-    gap: 16px;
-    justify-self: center;
-    width: min(100%, 340px);
-    padding: 20px;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    background: var(--surface);
-    box-shadow: 0 24px 60px -28px rgb(0 0 0 / 0.35);
-    text-decoration: none;
-    transition: transform 0.2s;
-  }
-
-  .preview:hover {
-    transform: translateY(-2px);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .preview {
-      transition: none;
-    }
-  }
-
-  .preview-top {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--muted);
-    font-size: 0.8125rem;
-    font-weight: 550;
-  }
-
-  .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 999px;
-    background: var(--accent);
-  }
-
-  /* Room on the right and below for the dimension marks. */
-  .frame {
-    position: relative;
-    justify-self: center;
-    width: 62%;
-    margin: 4px 24px 22px 0;
-  }
-
-  .frame svg {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: 6px;
-    box-shadow: 0 0 0 1px var(--border);
-  }
-
-  .mark {
-    position: absolute;
-    color: var(--muted);
-    font-size: 0.6875rem;
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-  }
-
-  .mark.w {
-    top: calc(100% + 6px);
-    left: 0;
-    right: 0;
-    text-align: center;
-  }
-
-  .mark.h {
-    top: 50%;
-    left: calc(100% + 16px);
-    transform: translate(-50%, -50%) rotate(90deg);
-  }
-
-  .facts {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-  }
-
-  .facts > span {
-    display: grid;
-    gap: 2px;
-    padding: 8px 10px;
-    border-radius: 10px;
-    background: var(--bg);
-    font-size: 0.875rem;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .facts small {
-    color: var(--muted);
-    font-size: 0.6875rem;
-    font-weight: 500;
-  }
-
-  .ok {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--accent);
-    font-size: 0.875rem;
-    font-weight: 550;
-  }
-
-  .ok svg,
   .icon svg {
     fill: none;
     stroke: currentColor;
@@ -339,7 +258,7 @@ const principles = [
   .section-head {
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
+    align-items: flex-end;
     justify-content: space-between;
     gap: 8px 24px;
   }
@@ -351,11 +270,16 @@ const principles = [
     letter-spacing: -0.025em;
   }
 
-  .section-head p {
+  .section-head > p {
     color: var(--muted);
   }
 
+  .section-head h2 {
+    margin-top: 6px;
+  }
+
   .tools,
+  .pillars,
   .principles {
     display: grid;
     gap: 16px;
@@ -365,17 +289,83 @@ const principles = [
   }
 
   .tools {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
   }
 
   .card {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 24px;
-    border: 1px solid var(--border);
+    padding: 28px;
+    border-radius: 24px;
+    transition:
+      transform 0.25s,
+      box-shadow 0.25s;
+  }
+
+  /* Each product glows in its own colours, so the two read as products, not list items. */
+  .card.live:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      inset 0 1px 0 var(--glass-shine),
+      0 24px 60px -24px color-mix(in srgb, var(--from) 55%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card {
+      transition: none;
+    }
+
+    .card.live:hover {
+      transform: none;
+    }
+  }
+
+  .top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .glyph {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
     border-radius: 16px;
-    background: var(--surface);
+    background: linear-gradient(135deg, var(--from), var(--to));
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.4),
+      0 10px 24px -10px var(--from);
+    color: #fff;
+  }
+
+  .glyph svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .card h3 {
+    font-size: 1.375rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+  }
+
+  .card > p {
+    margin-top: 10px;
+  }
+
+  .idea {
+    margin-top: 20px;
+    color: var(--muted);
+    text-align: center;
   }
 
   .card.live {
@@ -397,6 +387,7 @@ const principles = [
   }
 
   .card p,
+  .pillars p,
   .principles p {
     margin-top: 6px;
     color: var(--muted);
@@ -424,8 +415,20 @@ const principles = [
   }
 
   .card-foot .note {
+    width: 100%;
     margin: 0;
     font-size: 0.875rem;
+  }
+
+  .card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .gh {
+    margin-right: 8px;
+    fill: currentColor;
   }
 
   .btn.small {
@@ -434,8 +437,20 @@ const principles = [
     font-size: 0.875rem;
   }
 
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .category {
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
+
   .badge {
-    margin-bottom: 14px;
     padding: 2px 10px;
     border-radius: 999px;
     font-size: 0.75rem;
@@ -452,12 +467,6 @@ const principles = [
     color: var(--accent);
   }
 
-  .card.ghost {
-    border-style: dashed;
-    border-color: color-mix(in srgb, var(--muted) 45%, transparent);
-    background: transparent;
-  }
-
   .link {
     color: var(--accent);
     font-weight: 550;
@@ -472,11 +481,14 @@ const principles = [
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
 
+  .pillars {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+
+  .pillars li,
   .principles li {
     padding: 20px;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    background: var(--surface);
+    border-radius: 20px;
   }
 
   .icon {
@@ -492,11 +504,10 @@ const principles = [
 
   .teams {
     padding: 40px 24px;
-    border: 1px solid var(--border);
-    border-radius: 20px;
+    border-radius: 24px;
     background:
       radial-gradient(120% 140% at 100% 0%, var(--accent-soft), transparent 60%),
-      var(--surface);
+      var(--glass);
   }
 
   @media (min-width: 640px) {
