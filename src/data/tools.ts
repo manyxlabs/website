@@ -16,15 +16,15 @@ export type Tool = {
 
 export const tools: Tool[] = [
   {
-    name: 'Form Photo & Signature Resizer',
+    name: 'Form & Paperwork Tools',
     category: 'Everyday utility',
     icon: 'M4 5h16v14H4zM4 15l4.5-4.5 4 4 2.5-2.5 5 5M15.5 9.5h.01',
     tint: ['#10b981', '#0ea5e9'],
     summary:
-      'Get your photo and signature to the exact KB and pixel size that exam, bank and PAN forms ask for. Opens iPhone HEIC photos and scanner TIFFs too.',
+      'Photo, signature and passport photo resizing for exam, bank and PAN forms, PDF compression, Aadhaar masking, rent receipts and GST invoices.',
     note: 'Runs in your browser. Nothing is uploaded.',
     status: 'live',
-    href: '/tools/photo-resizer/',
+    href: '/tools/',
     source: `${GITHUB}/photo-resizer`,
   },
   {

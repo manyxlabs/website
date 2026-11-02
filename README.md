@@ -19,7 +19,7 @@ Each push to `main` waits for the build to go live (`/build.txt` holds its commi
 ## The photo resizer
 
 The resizer and its size guides live in their own repo and Cloudflare Worker, [manyxlabs/photo-resizer](https://github.com/manyxlabs/photo-resizer), but keep their URLs here.
-`wrangler.jsonc` runs `worker.ts` only for `/tools/photo-resizer*`, `/photo-size*`, `/_resizer/*` and `/sitemap-resizer-*`, and it hands those to the resizer through a service binding.
+`wrangler.jsonc` runs `worker.ts` only for `/tools*`, `/photo-size*`, `/_resizer/*` and `/sitemap-resizer-*`, and it hands those to the resizer through a service binding.
 Everything else is served straight from `dist/`.
 `robots.txt` lists both sitemaps.
 The header, footer and layout are copied in both repos; change them together.

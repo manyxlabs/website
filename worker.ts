@@ -1,4 +1,4 @@
-// Runs only for the paths `run_worker_first` lists in wrangler.jsonc: the photo resizer's
+// Runs only for the paths `run_worker_first` lists in wrangler.jsonc: the free tools'
 // pages, bundles and sitemap, which its own Worker (manyxlabs/photo-resizer) serves.
 // Every other path is this site's static assets and never reaches this code.
 export default {
