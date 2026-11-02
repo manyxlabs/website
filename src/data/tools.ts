@@ -19,8 +19,9 @@ export const tools: Tool[] = [
   {
     name: 'Mutual Fund Screener',
     summary:
-      'Compare Indian mutual funds on rolling returns, risk and how each one really did against its peers, with every number explained.',
+      'Screen and compare every active Indian mutual fund on rolling returns, risk and how each one really did against its peers, with every number explained. Rebuilt daily from AMFI.',
     note: 'A research tool, not investment advice.',
-    status: 'building',
+    status: 'live',
+    href: 'https://screener.manyxlabs.com/',
   },
 ];
