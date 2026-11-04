@@ -16,11 +16,13 @@ test('every page in the sitemap is indexable, described and canonical', async ({
     const xml = await (await request.get(index)).text();
     maps.push(...[...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]!.replace(SITE, '')));
   }
-  const urls: string[] = [];
+  // The resizer's sitemap is in both indexes, so its pages are counted once.
+  const found = new Set<string>();
   for (const map of maps) {
     const xml = await (await request.get(map)).text();
-    urls.push(...[...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]!));
+    for (const m of xml.matchAll(/<loc>([^<]+)<\/loc>/g)) found.add(m[1]!);
   }
+  const urls = [...found];
   // The pages a search engine should find, at least; the 404 must not be among them.
   for (const path of ['/', '/tools/photo-resizer/', '/photo-size/', '/photo-size/ssc/']) expect(urls).toContain(SITE + path);
   expect(urls.some((u) => u.includes('404'))).toBe(false);

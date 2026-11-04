@@ -12,7 +12,13 @@ export default defineConfig({
   // The CSS is a few KB, so a separate request would only hold up the first paint.
   build: { inlineStylesheets: 'always' },
   integrations: [
-    sitemap({ filter: (page) => !page.endsWith('/404/') }),
+    sitemap({
+      filter: (page) => !page.endsWith('/404/'),
+      // The free tools' pages, built by their own Worker (manyxlabs/photo-resizer). An index may not
+      // name another index, so this names its one sitemap file; it holds far under the 45,000 URLs
+      // that would split it.
+      customSitemaps: ['https://www.manyxlabs.com/sitemap-resizer-0.xml'],
+    }),
     { name: 'build-id', hooks: { 'astro:build:done': ({ dir }) => writeFileSync(new URL('build.txt', dir), commit) } },
   ],
 });
