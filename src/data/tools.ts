@@ -39,4 +39,15 @@ export const tools: Tool[] = [
     href: 'https://screener.manyxlabs.com/',
     source: `${GITHUB}/mf-screener`,
   },
+  {
+    name: 'Gloss Reader',
+    category: 'Reading & research',
+    icon: 'M4 4h8v16H4zM7 8h2M7 12h2M15 6h5v5h-5zM15 14h5v5h-5zM12 8.5h3M12 16.5h3',
+    tint: ['#f59e0b', '#ec4899'],
+    summary:
+      'Read PDFs, Word and PowerPoint files and web pages next to a canvas: pull passages out, arrange and connect them, write by hand, and jump back to the exact line any excerpt came from.',
+    note: 'Runs in your browser. Shared projects are end-to-end encrypted.',
+    status: 'live',
+    href: 'https://gloss.manyxlabs.com/',
+  },
 ];
