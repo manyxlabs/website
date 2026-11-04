@@ -9,6 +9,8 @@ const commit = process.env.WORKERS_CI_COMMIT_SHA ?? process.env.VERCEL_GIT_COMMI
 
 export default defineConfig({
   site: 'https://www.manyxlabs.com',
+  // The CSS is a few KB, so a separate request would only hold up the first paint.
+  build: { inlineStylesheets: 'always' },
   integrations: [
     sitemap({ filter: (page) => !page.endsWith('/404/') }),
     { name: 'build-id', hooks: { 'astro:build:done': ({ dir }) => writeFileSync(new URL('build.txt', dir), commit) } },
