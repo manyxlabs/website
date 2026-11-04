@@ -101,16 +101,16 @@ const principles = [
                     </a>
                     {tool.source && (
                       <a
-                        class="btn small"
+                        class="btn small source"
                         href={tool.source}
                         target="_blank"
                         rel="noopener"
                         aria-label={`${tool.name} source code on GitHub`}
+                        title="Source code on GitHub"
                       >
                         <svg class="gh" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
                           <path d={GITHUB_MARK} />
                         </svg>
-                        Source
                       </a>
                     )}
                   </span>
@@ -420,8 +420,14 @@ const principles = [
   }
 
   .gh {
-    margin-right: 8px;
     fill: currentColor;
+  }
+
+  /* Icon only, so the actions stay on one line in a three-column grid. */
+  .btn.small.source {
+    justify-content: center;
+    width: 36px;
+    padding: 0;
   }
 
   .btn.small {
