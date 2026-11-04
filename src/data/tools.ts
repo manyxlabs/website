@@ -54,6 +54,7 @@ export const tools: Tool[] = [
     note: 'Runs in your browser. Shared projects are end-to-end encrypted.',
     status: 'live',
     href: 'https://gloss.manyxlabs.com/',
+    source: `${GITHUB}/gloss`,
     applicationCategory: 'EducationalApplication',
   },
 ];
