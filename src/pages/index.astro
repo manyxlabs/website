@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { tools } from '../data/tools';
-import { organization } from '../seo';
+import { organization, products, website } from '../seo';
 import { CALENDLY, EMAIL } from '../site';
 
 // GitHub's mark, from its Octicons set.
@@ -41,8 +41,8 @@ const principles = [
 
 <Base
   title="Manyx Labs - Applied AI, SaaS and everyday software"
-  description="Manyx Labs is a Bengaluru studio building applied AI tools, SaaS products and free everyday utilities. Private by default, no ads, built to last."
-  schema={[organization, { '@type': 'WebSite', name: 'Manyx Labs', url: 'https://www.manyxlabs.com/', publisher: { '@id': organization['@id'] } }]}
+  description="Manyx Labs is a Bengaluru software studio making Gloss Reader for PDFs, a mutual fund screener and form photo tools. All free, private by default, no ads."
+  schema={[organization, website, products]}
 >
   <Header />
 

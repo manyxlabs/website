@@ -1,7 +1,10 @@
 import { GITHUB } from '../site';
 
 // A live tool must have somewhere to send people; one still being built must not.
-/** `icon` is a 24px stroked SVG path; `tint` the two ends of its tile's gradient. */
+/**
+ * `icon` is a 24px stroked SVG path; `tint` the two ends of its tile's gradient.
+ * `applicationCategory` is one of schema.org's, for the product's structured data.
+ */
 export type Tool = {
   name: string;
   category: string;
@@ -11,7 +14,7 @@ export type Tool = {
   tint: [string, string];
 } & (
   | { status: 'building' }
-  | { status: 'live'; href: string; source?: string }
+  | { status: 'live'; href: string; source?: string; applicationCategory: string }
 );
 
 export const tools: Tool[] = [
@@ -25,6 +28,7 @@ export const tools: Tool[] = [
     note: 'Runs in your browser. Nothing is uploaded.',
     status: 'live',
     href: '/tools/',
+    applicationCategory: 'UtilitiesApplication',
     source: `${GITHUB}/photo-resizer`,
   },
   {
@@ -37,6 +41,7 @@ export const tools: Tool[] = [
     note: 'A research tool, not investment advice.',
     status: 'live',
     href: 'https://screener.manyxlabs.com/',
+    applicationCategory: 'FinanceApplication',
     source: `${GITHUB}/mf-screener`,
   },
   {
@@ -49,5 +54,6 @@ export const tools: Tool[] = [
     note: 'Runs in your browser. Shared projects are end-to-end encrypted.',
     status: 'live',
     href: 'https://gloss.manyxlabs.com/',
+    applicationCategory: 'EducationalApplication',
   },
 ];
