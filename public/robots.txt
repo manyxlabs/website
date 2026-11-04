@@ -4,6 +4,7 @@ Allow: /
 Sitemap: https://www.manyxlabs.com/sitemap-index.xml
 Sitemap: https://www.manyxlabs.com/sitemap-resizer-index.xml
 
-# A product on its own host, listed in its own sitemap (which its robots.txt also names), so
-# crawlers that start here find it. Gloss has no sitemap yet, so it is not listed.
+# Products on their own hosts, each listed in its own sitemap (which its robots.txt also names),
+# so crawlers that start here find them.
 Sitemap: https://screener.manyxlabs.com/sitemap.xml
+Sitemap: https://gloss.manyxlabs.com/sitemap.xml
