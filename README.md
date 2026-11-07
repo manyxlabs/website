@@ -31,6 +31,15 @@ A key missing in any language fails the type check, and a string whose `{placeho
 Each script gets a self-hosted Noto Sans face (`src/i18n/fonts.ts`), declared and preloaded only on pages in that language.
 Each language's 404 is moved to `dist/<code>/404.html` after the build, where Cloudflare's nearest-404 lookup finds it.
 
+## Design
+
+The look follows the founder's portfolio at [www.manishonai.in](https://www.manishonai.in/) (`src/index.css` in its repo): its colour tokens, glass, buttons, chips and motion are copied as plain CSS into `src/layouts/Base.astro`.
+That block is identical in this repo and the tools (manyxlabs/photo-resizer), and so is `src/components/Header.astro`, because both are served on www.manyxlabs.com; change them in both.
+Colour stays neutral: the emerald accent marks only eyebrows, links, status dots, focus rings and the scroll bar, and light-theme accent text uses a deeper emerald so it meets WCAG AA.
+The `dark` class on `<html>` picks the theme, saved in `localStorage` under `theme` and otherwise taken from the system, and a head script applies it before first paint.
+Text is Geist and Geist Mono, self-hosted from `@fontsource-variable`, with each language's Noto Sans after them.
+The home page uses all of it: the halo and dot grid, glass cards that reveal on scroll and follow the pointer, and the heading sheen.
+
 ## The photo resizer
 
 The resizer and its size guides live in their own repo and Cloudflare Worker, [manyxlabs/photo-resizer](https://github.com/manyxlabs/photo-resizer), but keep their URLs here.
