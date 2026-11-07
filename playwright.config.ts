@@ -1,12 +1,14 @@
 import { defineConfig } from '@playwright/test';
 
 const resizer = process.env.RESIZER_DIR ?? '../photo-resizer';
+// PORT lets several checkouts run their suites side by side.
+const port = Number(process.env.PORT ?? 4330);
 
 export default defineConfig({
   testDir: 'e2e',
   outputDir: 'test-results/playwright',
   use: {
-    baseURL: process.env.BASE_URL ?? 'http://localhost:4330',
+    baseURL: process.env.BASE_URL ?? `http://localhost:${port}`,
     // Set CHROMIUM to a system browser where Playwright's own download is unavailable.
     launchOptions: { executablePath: process.env.CHROMIUM || undefined },
   },
@@ -16,8 +18,8 @@ export default defineConfig({
   webServer: process.env.BASE_URL
     ? undefined
     : {
-        command: `npm run build && npm --prefix ${resizer} run build && npx -y wrangler@4.152.0 dev -c wrangler.jsonc -c ${resizer}/wrangler.jsonc --port 4330`,
-        port: 4330,
+        command: `npm run build && npm --prefix ${resizer} run build && npx -y wrangler@4.152.0 dev -c wrangler.jsonc -c ${resizer}/wrangler.jsonc --port ${port}`,
+        port,
         reuseExistingServer: false,
         timeout: 180_000,
       },
