@@ -20,7 +20,7 @@ const GITHUB_MARK =
 // English in every language, like the rest of the mail the maintainer reads.
 const idea = `mailto:${EMAIL}?subject=${encodeURIComponent('Product idea')}`;
 
-// 24px line icons, stroked in the accent colour, in the catalogue's order.
+// 24px line icons, in the catalogue's order.
 const PILLAR_ICONS = [
   'M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8zM18 15l.9 2.1L21 18l-2.1.9L18 21l-.9-2.1L15 18l2.1-.9z',
   'M4 5h16v10H4zM8 19h8M12 15v4',
@@ -39,11 +39,11 @@ const PRINCIPLE_ICONS = [
 
   <main>
     <section class="wrap hero">
-      <h1>{t.home.heading}</h1>
-      <p class="lede">{t.home.lede}</p>
-      <div class="actions">
-        <a class="btn primary" href="#products">{t.home.seeProducts}</a>
-        <a class="btn" href="#teams">{t.header.work}</a>
+      <h1 class="text-sheen">{t.home.heading}</h1>
+      <p class="lede reveal" style="--i: 1">{t.home.lede}</p>
+      <div class="actions reveal" style="--i: 2">
+        <a class="btn btn-primary" href="#products">{t.home.seeProducts}</a>
+        <a class="btn btn-glass" href="#teams">{t.header.work} <span aria-hidden="true">&rarr;</span></a>
       </div>
     </section>
 
@@ -55,19 +55,19 @@ const PRINCIPLE_ICONS = [
         </div>
         <p>{t.home.products.aside}</p>
       </div>
-      <ul class="tools">
+      <ul class="products">
         {
-          tools.map((tool) => (
-            <li class:list={['card', 'glass', tool.status]} style={`--from: ${tool.tint[0]}; --to: ${tool.tint[1]}`}>
+          tools.map((tool, i) => (
+            <li class="product card glass spotlight reveal" style={`--i: ${i}`}>
               <span class="top-row">
-                <span class="glyph" aria-hidden="true">
+                <span class="tile" aria-hidden="true">
                   <svg viewBox="0 0 24 24" width="24" height="24">
                     <path d={tool.icon} />
                   </svg>
                 </span>
                 <span class="tags">
-                  <span class:list={['badge', tool.status]}>{tool.status === 'live' ? t.home.products.live : t.home.products.building}</span>
-                  <span class="category">{t.tools[tool.id].category}</span>
+                  <span class:list={['chip', 'badge', tool.status]}>{tool.status === 'live' ? t.home.products.live : t.home.products.building}</span>
+                  <span class="chip category">{t.tools[tool.id].category}</span>
                 </span>
               </span>
               <h3>
@@ -84,12 +84,12 @@ const PRINCIPLE_ICONS = [
                 <p class="note">{t.tools[tool.id].note}</p>
                 {tool.status === 'live' && (
                   <span class="card-actions">
-                    <a class="btn primary small" href={toolHref(tool, locale)} target="_blank" rel="noopener">
+                    <a class="btn btn-primary" href={toolHref(tool, locale)} target="_blank" rel="noopener">
                       {t.tools[tool.id].open} &rarr;
                     </a>
                     {tool.source && (
                       <a
-                        class="btn small source"
+                        class="btn-icon"
                         href={tool.source}
                         target="_blank"
                         rel="noopener"
@@ -120,7 +120,7 @@ const PRINCIPLE_ICONS = [
       <ul class="pillars">
         {
           t.home.build.pillars.map(([title, body], i) => (
-            <li class="glass">
+            <li class="card glass spotlight reveal" style={`--i: ${i}`}>
               <span class="icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="20" height="20">
                   <path d={PILLAR_ICONS[i]} />
@@ -141,7 +141,7 @@ const PRINCIPLE_ICONS = [
       <ul class="principles">
         {
           t.home.how.principles.map(([title, body], i) => (
-            <li class="glass">
+            <li class="card glass spotlight reveal" style={`--i: ${i}`}>
               <span class="icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="20" height="20">
                   <path d={PRINCIPLE_ICONS[i]} />
@@ -156,13 +156,13 @@ const PRINCIPLE_ICONS = [
     </section>
 
     <section class="wrap" id="teams" aria-labelledby="teams-h">
-      <div class="teams glass">
+      <div class="teams glass spotlight reveal">
         <p class="eyebrow">{t.header.work}</p>
         <h2 id="teams-h">{t.home.teams.heading}</h2>
         <p>{t.home.teams.body}</p>
         <div class="actions">
-          <a class="btn primary" href={CALENDLY}>{t.home.teams.book}</a>
-          <a class="btn" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+          <a class="btn btn-primary" href={CALENDLY}>{t.home.teams.book}</a>
+          <a class="btn btn-glass" href={`mailto:${EMAIL}`}>{EMAIL}</a>
         </div>
       </div>
     </section>
@@ -172,80 +172,61 @@ const PRINCIPLE_ICONS = [
 </Base>
 
 <style>
+  /* The portfolio's Section: py-20 sm:py-28, with in-page links landing below the floating header. */
   main > section {
     padding-block: 40px;
+    scroll-margin-top: 96px;
   }
 
-  /* In-page links land below the sticky header, not under it. */
-  section[id] {
-    scroll-margin-top: 72px;
-  }
-
-  .hero {
-    position: relative;
-    padding-block: 72px 56px;
-  }
-
-  /* A dotted grid that fades out from the headline, so the hero has depth without a picture. */
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: -80px 0 0;
-    background:
-      radial-gradient(closest-side at 70% 30%, var(--accent-soft), transparent),
-      radial-gradient(color-mix(in srgb, var(--muted) 30%, transparent) 1px, transparent 1.5px) 0 0 / 24px 24px;
-    mask-image: radial-gradient(ellipse 70% 80% at 60% 30%, #000 30%, transparent 75%);
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  @media (min-width: 880px) {
-    .hero {
-      padding-block: 120px 80px;
+  @media (min-width: 640px) {
+    main > section {
+      padding-block: 56px;
     }
   }
 
-  .eyebrow {
-    color: var(--accent);
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+  .hero {
+    padding-block: 56px 48px;
+  }
+
+  @media (min-width: 640px) {
+    .hero {
+      padding-block: 104px 72px;
+    }
   }
 
   h1 {
-    max-width: 15ch;
-    font-size: clamp(2.5rem, 7vw, 4.5rem);
-    font-weight: 700;
-    line-height: 1.04;
-    letter-spacing: -0.035em;
+    max-width: 16ch;
+    font-size: 3rem;
+    line-height: 1.05;
   }
 
-  /* Indic words run long: at 40px one Tamil word of the headline is wider than a 360px phone. */
+  @media (min-width: 640px) {
+    h1 {
+      font-size: 4.5rem;
+    }
+  }
+
+  /* Indic words run long: at 48px one Tamil word of the headline is wider than a 360px phone. */
   h1:not(:lang(en)) {
-    font-size: clamp(2.25rem, 7vw, 4.5rem);
+    font-size: 2.25rem;
   }
 
-  .lede {
-    max-width: 36rem;
-    margin-top: 20px;
-    color: var(--muted);
-    font-size: 1.125rem;
+  @media (min-width: 640px) {
+    h1:not(:lang(en)) {
+      font-size: 3.75rem;
+    }
+  }
+
+  .hero .lede {
+    max-width: 42rem;
+    margin-top: 24px;
   }
 
   .actions {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    margin-top: 32px;
-  }
-
-  .icon svg {
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+    margin-top: 40px;
   }
 
   .section-head {
@@ -258,86 +239,90 @@ const PRINCIPLE_ICONS = [
 
   .section-head h2,
   .teams h2 {
-    font-size: clamp(1.5rem, 4vw, 2rem);
-    font-weight: 680;
-    letter-spacing: -0.025em;
+    font-size: 1.875rem;
+    line-height: 1.2;
+  }
+
+  @media (min-width: 640px) {
+    .section-head h2,
+    .teams h2 {
+      font-size: 2.25rem;
+    }
   }
 
   .section-head > p {
-    color: var(--muted);
+    color: rgb(var(--muted));
   }
 
-  .section-head h2 {
-    margin-top: 6px;
+  .eyebrow + h2 {
+    margin-top: 12px;
   }
 
-  .tools,
+  .products,
   .pillars,
   .principles {
     display: grid;
     gap: 16px;
-    margin: 24px 0 0;
+    margin: 40px 0 0;
     padding: 0;
     list-style: none;
   }
 
-  .tools {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+  .products {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   }
 
-  .card {
+  .pillars {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  }
+
+  .principles {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  }
+
+  .product {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 28px;
-    border-radius: 24px;
-    transition:
-      transform 0.25s,
-      box-shadow 0.25s;
   }
 
-  /* Each product glows in its own colours, so the two read as products, not list items. */
-  .card.live:hover {
-    transform: translateY(-3px);
-    box-shadow:
-      inset 0 1px 0 var(--glass-shine),
-      0 24px 60px -24px color-mix(in srgb, var(--from) 55%, transparent);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .card {
-      transition: none;
-    }
-
-    .card.live:hover {
-      transform: none;
-    }
-  }
-
+  /* When the chips do not fit beside the tile, they move under it together rather than splitting. */
   .top-row {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
   }
 
-  .glyph {
+  /* Neutral tiles: colour is kept for small marks only. */
+  .tile,
+  .icon {
     display: grid;
+    flex: none;
     place-items: center;
-    width: 52px;
-    height: 52px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, var(--from), var(--to));
-    box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.4),
-      0 10px 24px -10px var(--from);
-    color: #fff;
+    border: 1px solid rgb(var(--fg) / 0.1);
+    background: rgb(var(--fg) / 0.05);
+    color: rgb(var(--fg));
   }
 
-  .glyph svg {
+  .tile {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+  }
+
+  .icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    color: rgb(var(--muted));
+  }
+
+  :is(.tile, .icon) svg {
     fill: none;
     stroke: currentColor;
     stroke-width: 2;
@@ -345,120 +330,81 @@ const PRINCIPLE_ICONS = [
     stroke-linejoin: round;
   }
 
-  .card h3 {
-    font-size: 1.375rem;
-    font-weight: 650;
-    letter-spacing: -0.02em;
+  .tags {
+    display: flex;
+    gap: 8px;
   }
 
-  .card > p {
-    margin-top: 10px;
+  /* The status dot is one of the accent's small marks. */
+  .badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: rgb(var(--muted));
   }
 
-  .idea {
-    margin-top: 20px;
-    color: var(--muted);
-    text-align: center;
-  }
-
-  .card.live {
-    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  .badge.live::before {
+    background: rgb(var(--accent));
+    box-shadow: 0 0 8px rgb(var(--accent) / 0.8);
   }
 
   h3 {
-    font-size: 1.0625rem;
-    font-weight: 620;
-    letter-spacing: -0.01em;
+    font-size: 1.125rem;
   }
 
-  .card h3 a {
+  .product h3 {
+    font-size: 1.25rem;
+  }
+
+  .product h3 a {
     text-decoration: none;
   }
 
-  .card h3 a:hover {
+  .product h3 a:hover {
     text-decoration: underline;
   }
 
-  .card p,
+  .product > p,
   .pillars p,
   .principles p {
-    margin-top: 6px;
-    color: var(--muted);
+    margin-top: 8px;
+    color: rgb(var(--muted));
+    line-height: 1.625;
   }
 
   .card-foot {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    gap: 16px;
     width: 100%;
     margin-top: auto;
-    padding-top: 20px;
+    padding-top: 24px;
   }
 
-  .card-foot .note {
-    width: 100%;
-    margin: 0;
+  .note {
+    color: rgb(var(--muted));
     font-size: 0.875rem;
   }
 
   .card-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
+    align-items: center;
   }
 
   .gh {
     fill: currentColor;
   }
 
-  /* Icon only, so the actions stay on one line in a three-column grid. */
-  .btn.small.source {
-    justify-content: center;
-    width: 36px;
-    padding: 0;
-  }
-
-  .btn.small {
-    min-height: 36px;
-    padding-inline: 16px;
-    font-size: 0.875rem;
-  }
-
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-    justify-content: flex-end;
-  }
-
-  .category {
-    color: var(--muted);
-    font-size: 0.8125rem;
-  }
-
-  .badge {
-    padding: 2px 10px;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-  }
-
-  .badge.building {
-    background: var(--border);
-    color: var(--muted);
-  }
-
-  .badge.live {
-    background: var(--accent-soft);
-    color: var(--accent);
+  .idea {
+    margin-top: 32px;
+    color: rgb(var(--muted));
+    text-align: center;
   }
 
   .link {
-    color: var(--accent);
-    font-weight: 550;
+    font-weight: 500;
     text-decoration: none;
   }
 
@@ -466,53 +412,45 @@ const PRINCIPLE_ICONS = [
     text-decoration: underline;
   }
 
-  .principles {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  }
-
-  .pillars {
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  }
-
-  .pillars li,
-  .principles li {
-    padding: 20px;
-    border-radius: 20px;
-  }
-
-  .icon {
-    display: grid;
-    place-items: center;
-    width: 36px;
-    height: 36px;
-    margin-bottom: 14px;
-    border-radius: 10px;
-    background: var(--accent-soft);
-    color: var(--accent);
-  }
-
+  /* The portfolio's contact card, with its accent hairline along the top edge. */
   .teams {
-    padding: 40px 24px;
-    border-radius: 24px;
-    background:
-      radial-gradient(120% 140% at 100% 0%, var(--accent-soft), transparent 60%),
-      var(--glass);
+    overflow: hidden;
+    padding: 64px 24px;
+    border-radius: 32px;
+    text-align: center;
   }
 
   @media (min-width: 640px) {
     .teams {
-      padding: 56px;
+      padding-inline: 64px;
     }
+  }
+
+  .teams > .eyebrow::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 66%;
+    height: 1px;
+    translate: -50% 0;
+    background: linear-gradient(90deg, transparent, rgb(var(--accent) / 0.8), transparent);
   }
 
   .teams h2 {
     max-width: 20ch;
-    margin-top: 12px;
+    margin-inline: auto;
   }
 
   .teams p:not(.eyebrow) {
-    max-width: 38rem;
-    margin-top: 12px;
-    color: var(--muted);
+    max-width: 36rem;
+    margin: 20px auto 0;
+    color: rgb(var(--muted));
+    font-size: 1.125rem;
+    line-height: 1.625;
+  }
+
+  .teams .actions {
+    justify-content: center;
   }
 </style>

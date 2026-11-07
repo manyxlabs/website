@@ -10,7 +10,7 @@ const { t, href } = pageLocale(Astro.url);
 
 <Base title={t.notFound.title} description={t.notFound.description} noindex>
   <main class="wrap">
-    <p class="code">404</p>
+    <p class="eyebrow">404</p>
     <h1>{t.notFound.heading}</h1>
     <a href={href('/')}>{t.notFound.back} &rarr;</a>
   </main>
@@ -25,20 +25,14 @@ const { t, href } = pageLocale(Astro.url);
     min-height: 100svh;
   }
 
-  .code {
-    color: var(--accent);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-  }
-
   h1 {
-    font-size: clamp(1.75rem, 5vw, 2.5rem);
-    letter-spacing: -0.03em;
+    font-size: clamp(1.875rem, 6vw, 3rem);
+    line-height: 1.15;
   }
 
   a {
-    color: var(--accent);
-    font-weight: 550;
+    color: rgb(var(--accent-text));
+    font-weight: 500;
     text-decoration: none;
   }
 
