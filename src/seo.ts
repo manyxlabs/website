@@ -1,4 +1,6 @@
-import { tools } from './data/tools';
+import { toolHref, tools } from './data/tools';
+import { catalogues } from './i18n';
+import type { Locale } from './i18n/locales';
 import { EMAIL, FOUNDER, GITHUB } from './site';
 
 const SITE = 'https://www.manyxlabs.com';
@@ -23,20 +25,20 @@ export const organization = {
   sameAs: [GITHUB],
 };
 
-export const website = {
+export const website = (locale: Locale) => ({
   '@type': 'WebSite',
   '@id': `${SITE}/#website`,
   name: 'Manyx Labs',
   alternateName: 'ManyxLabs',
   url: `${SITE}/`,
-  inLanguage: 'en',
+  inLanguage: locale,
   publisher: { '@id': organization['@id'] },
-};
+});
 
 // Only live products: one still being built has no page for a result to lead to.
-export const products = {
+export const products = (locale: Locale) => ({
   '@type': 'ItemList',
-  name: 'Manyx Labs products',
+  name: catalogues[locale].home.products.list,
   itemListElement: tools
     .flatMap((tool) => (tool.status === 'live' ? [tool] : []))
     .map((tool, i) => ({
@@ -45,8 +47,8 @@ export const products = {
       item: {
         '@type': 'SoftwareApplication',
         name: tool.name,
-        description: tool.summary,
-        url: new URL(tool.href, SITE).href,
+        description: catalogues[locale].tools[tool.id].summary,
+        url: new URL(toolHref(tool, locale), SITE).href,
         applicationCategory: tool.applicationCategory,
         operatingSystem: 'Web',
         isAccessibleForFree: true,
@@ -54,7 +56,7 @@ export const products = {
         publisher: { '@id': organization['@id'] },
       },
     })),
-};
+});
 
 export const breadcrumbs = (trail: [name: string, path: string][]) => ({
   '@type': 'BreadcrumbList',

@@ -2,16 +2,20 @@
 import '@fontsource-variable/inter';
 // The file Inter's CSS loads for Latin text, requested before that CSS is even parsed.
 import inter from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import { pageLocale } from '../i18n';
+import { FONTS, fontFace } from '../i18n/fonts';
+import { LOCALES, localePath } from '../i18n/locales';
 
-interface Props {
+type Props = {
   title: string;
   description: string;
   /** schema.org objects, for search results. */
   schema?: Record<string, unknown>[];
-  noindex?: boolean;
-}
+} & ({ ogAlt: string; noindex?: never } | { ogAlt?: never; noindex: true });
 
-const { title, description, schema = [], noindex = false } = Astro.props;
+const { title, description, schema = [], ogAlt, noindex = false } = Astro.props;
+const { locale, path } = pageLocale(Astro.url);
+const font = locale === 'en' ? undefined : FONTS[locale];
 // "</script>" inside a string would end the tag early.
 const ld = (o: Record<string, unknown>) => JSON.stringify({ '@context': 'https://schema.org', ...o }).replace(/</g, '\\u003c');
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -19,14 +23,18 @@ const og = new URL('/og.png', Astro.site);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
     {!noindex && <link rel="canonical" href={canonical} />}
+    {!noindex && LOCALES.map((l) => <link rel="alternate" hreflang={l} href={new URL(localePath(l, path), Astro.site)} />)}
+    {!noindex && <link rel="alternate" hreflang="x-default" href={new URL(path, Astro.site)} />}
     <link rel="preload" href={inter} as="font" type="font/woff2" crossorigin />
+    {font && <link rel="preload" href={font.url} as="font" type="font/woff2" crossorigin />}
+    {font && <style is:inline set:html={`${fontFace(font)}:root{--script:'${font.family}'}`} />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -34,13 +42,14 @@ const og = new URL('/og.png', Astro.site);
     <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Manyx Labs" />
+    <meta property="og:locale" content={`${locale}_IN`} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     {!noindex && <meta property="og:url" content={canonical} />}
     <meta property="og:image" content={og} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Manyx Labs: software that does the work for you, with its products" />
+    <meta property="og:image:alt" content={ogAlt ?? title} />
     <meta name="twitter:card" content="summary_large_image" />
     {noindex && <meta name="robots" content="noindex" />}
     <!-- Before first paint, so a saved theme never flashes the other one. -->
@@ -103,7 +112,8 @@ const og = new URL('/og.png', Astro.site);
     min-height: 100vh;
     background: var(--bg);
     color: var(--text);
-    font-family: 'Inter Variable', system-ui, sans-serif;
+    /* Inter for Latin text and digits, then the page's own script, if it has one. */
+    font-family: 'Inter Variable', var(--script, system-ui), system-ui, sans-serif;
     font-size: 1rem;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
@@ -145,6 +155,13 @@ const og = new URL('/og.png', Astro.site);
   h3,
   p {
     margin: 0;
+  }
+
+  /* Indic matras reach above and below the Latin line, and letter-spacing pulls conjuncts apart.
+     :root lifts this over the pages' scoped heading styles. */
+  :root :is(h1, h2, h3, .eyebrow):not(:lang(en)) {
+    line-height: 1.4;
+    letter-spacing: normal;
   }
 
   a {
