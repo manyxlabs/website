@@ -116,7 +116,7 @@ for (const l of OTHERS) {
       const family = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--script'));
       const script = /Noto Sans (\w+)/.exec(family)![1]!.toLowerCase();
       expect(fonts.some((f) => f.includes(`noto-sans-${script}`))).toBe(true);
-      for (const f of fonts) expect(f, 'an unexpected font').toMatch(new RegExp(`/(inter-[\\w-]+|noto-sans-${script}-${script}-wght-normal)\\.[\\w-]+\\.woff2$`));
+      for (const f of fonts) expect(f, 'an unexpected font').toMatch(new RegExp(`/(geist-[\\w-]+|noto-sans-${script}-${script}-wght-normal)\\.[\\w-]+\\.woff2$`));
     });
 
     test("a missing page is a 404 in the language, on this site's side and the tools'", async ({ page }) => {
