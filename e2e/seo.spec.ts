@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { LOCALES } from '../src/i18n/locales';
 
 const SITE = 'https://www.manyxlabs.com';
 
@@ -23,8 +24,12 @@ test('every page in the sitemap is indexable, described and canonical', async ({
     for (const m of xml.matchAll(/<loc>([^<]+)<\/loc>/g)) found.add(m[1]!);
   }
   const urls = [...found];
-  // The pages a search engine should find, at least; the 404 must not be among them.
-  for (const path of ['/', '/tools/photo-resizer/', '/photo-size/', '/photo-size/ssc/']) expect(urls).toContain(SITE + path);
+  // Nine languages of pages, each loaded in turn.
+  test.setTimeout(30_000 + urls.length * 1_000);
+  // The pages a search engine should find in every language, at least; no 404 may be among them.
+  for (const l of LOCALES)
+    for (const path of ['/', '/tools/photo-resizer/', '/photo-size/', '/photo-size/ssc/'])
+      expect(urls).toContain(SITE + (l === 'en' ? path : `/${l}${path}`));
   expect(urls.some((u) => u.includes('404'))).toBe(false);
 
   const titles = new Set<string>();
