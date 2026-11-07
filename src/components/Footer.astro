@@ -1,16 +1,19 @@
 ---
+import { pageLocale } from '../i18n';
 import { EMAIL, FOUNDER, GITHUB } from '../site';
+
+const { t, href } = pageLocale(Astro.url);
 ---
 
 <footer class="wrap">
   <div class="foot">
-    <p>&copy; {new Date().getFullYear()} Manyx Labs, Bengaluru</p>
-    <nav aria-label="Elsewhere">
-      <a href="/tools/">Free tools</a>
-      <a href="/photo-size/">Size guides</a>
+    <p>&copy; {new Date().getFullYear()} {t.footer.place}</p>
+    <nav aria-label={t.footer.nav}>
+      <a href={href('/tools/')}>{t.footer.tools}</a>
+      <a href={href('/photo-size/')}>{t.footer.guides}</a>
       <a href={GITHUB}>GitHub</a>
-      <a href={FOUNDER}>Founder</a>
-      <a href={`mailto:${EMAIL}`}>Email</a>
+      <a href={FOUNDER}>{t.footer.founder}</a>
+      <a href={`mailto:${EMAIL}`}>{t.footer.email}</a>
     </nav>
   </div>
 </footer>
@@ -29,7 +32,8 @@ import { EMAIL, FOUNDER, GITHUB } from '../site';
 
   nav {
     display: flex;
-    gap: 20px;
+    flex-wrap: wrap;
+    gap: 8px 20px;
   }
 
   nav a {

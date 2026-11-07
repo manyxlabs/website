@@ -1,12 +1,18 @@
 ---
-import Base from '../layouts/Base.astro';
+import { pageLocale } from '../../i18n';
+import { LANG_PARAMS } from '../../i18n/locales';
+import Base from '../../layouts/Base.astro';
+
+export const getStaticPaths = () => LANG_PARAMS.map((lang) => ({ params: { lang } }));
+
+const { t, href } = pageLocale(Astro.url);
 ---
 
-<Base title="Page not found - Manyx Labs" description="This page does not exist." noindex>
+<Base title={t.notFound.title} description={t.notFound.description} noindex>
   <main class="wrap">
     <p class="code">404</p>
-    <h1>This page doesn't exist.</h1>
-    <a href="/">Back to Manyx Labs &rarr;</a>
+    <h1>{t.notFound.heading}</h1>
+    <a href={href('/')}>{t.notFound.back} &rarr;</a>
   </main>
 </Base>
 

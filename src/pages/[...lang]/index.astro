@@ -1,71 +1,59 @@
 ---
-import Base from '../layouts/Base.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { tools } from '../data/tools';
-import { organization, products, website } from '../seo';
-import { CALENDLY, EMAIL } from '../site';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { toolHref, tools } from '../../data/tools';
+import { pageLocale } from '../../i18n';
+import { fmt } from '../../i18n/format';
+import { LANG_PARAMS } from '../../i18n/locales';
+import Base from '../../layouts/Base.astro';
+import { organization, products, website } from '../../seo';
+import { CALENDLY, EMAIL } from '../../site';
+
+export const getStaticPaths = () => LANG_PARAMS.map((lang) => ({ params: { lang } }));
+
+const { locale, t } = pageLocale(Astro.url);
 
 // GitHub's mark, from its Octicons set.
 const GITHUB_MARK =
   'M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z';
 
+// English in every language, like the rest of the mail the maintainer reads.
 const idea = `mailto:${EMAIL}?subject=${encodeURIComponent('Product idea')}`;
 
-// 24px line icons, stroked in the accent colour.
-const pillars = [
-  [
-    'Applied AI tools',
-    'Assistants and automations that take real work off your plate, tested with evals before they ship.',
-    'M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8zM18 15l.9 2.1L21 18l-2.1.9L18 21l-.9-2.1L15 18l2.1-.9z',
-  ],
-  [
-    'SaaS products',
-    'Focused software for teams and businesses, reliable enough to run every day without babysitting.',
-    'M4 5h16v10H4zM8 19h8M12 15v4',
-  ],
-  [
-    'Everyday utilities',
-    'Free tools for the small chores, like getting a form photo to size or comparing mutual funds.',
-    'M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z',
-  ],
+// 24px line icons, stroked in the accent colour, in the catalogue's order.
+const PILLAR_ICONS = [
+  'M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8zM18 15l.9 2.1L21 18l-2.1.9L18 21l-.9-2.1L15 18l2.1-.9z',
+  'M4 5h16v10H4zM8 19h8M12 15v4',
+  'M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z',
 ];
-
-const principles = [
-  ['Useful first', 'Every product starts from a real problem people hit again and again.', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 5a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z'],
-  ['Private by default', 'If work can run on your device, it does. We never sell your data.', 'M8 11V8a4 4 0 0 1 8 0v3M6 11h12v9H6z'],
-  ['Measured, not guessed', 'AI features are evaluated, so they behave the same in production as in the demo.', 'M5 12.5l4.5 4.5L19 7.5'],
-  ['No dark patterns', 'No pop-ups, no fake download buttons, no upsell traps.', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM5.6 5.6l12.8 12.8'],
+const PRINCIPLE_ICONS = [
+  'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 5a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z',
+  'M8 11V8a4 4 0 0 1 8 0v3M6 11h12v9H6z',
+  'M5 12.5l4.5 4.5L19 7.5',
+  'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM5.6 5.6l12.8 12.8',
 ];
 ---
 
-<Base
-  title="Manyx Labs - Applied AI, SaaS and everyday software"
-  description="Manyx Labs is a Bengaluru software studio making Gloss Reader for PDFs, a mutual fund screener and form photo tools. All free, private by default, no ads."
-  schema={[organization, website, products]}
->
+<Base title={t.home.title} description={t.home.description} ogAlt={t.home.ogAlt} schema={[organization, website(locale), products(locale)]}>
   <Header />
 
   <main>
     <section class="wrap hero">
-      <h1>Software that does the work for you.</h1>
-      <p class="lede">
-        Manyx Labs builds applied AI tools, SaaS products and everyday utilities. Each one does its job properly:
-        fast, private by default, and clear about what it does.
-      </p>
+      <h1>{t.home.heading}</h1>
+      <p class="lede">{t.home.lede}</p>
       <div class="actions">
-        <a class="btn primary" href="#products">See our products</a>
-        <a class="btn" href="#teams">Work with us</a>
+        <a class="btn primary" href="#products">{t.home.seeProducts}</a>
+        <a class="btn" href="#teams">{t.header.work}</a>
       </div>
     </section>
 
     <section class="wrap" id="products" aria-labelledby="products-h">
       <div class="section-head">
         <div>
-          <p class="eyebrow">Products</p>
-          <h2 id="products-h">Use them today, free.</h2>
+          <p class="eyebrow">{t.home.products.eyebrow}</p>
+          <h2 id="products-h">{t.home.products.heading}</h2>
         </div>
-        <p>No signup, no ads. More on the way.</p>
+        <p>{t.home.products.aside}</p>
       </div>
       <ul class="tools">
         {
@@ -78,26 +66,26 @@ const principles = [
                   </svg>
                 </span>
                 <span class="tags">
-                  <span class:list={['badge', tool.status]}>{tool.status === 'live' ? 'Live' : 'In progress'}</span>
-                  <span class="category">{tool.category}</span>
+                  <span class:list={['badge', tool.status]}>{tool.status === 'live' ? t.home.products.live : t.home.products.building}</span>
+                  <span class="category">{t.tools[tool.id].category}</span>
                 </span>
               </span>
               <h3>
                 {tool.status === 'live' ? (
-                  <a href={tool.href} target="_blank" rel="noopener">
+                  <a href={toolHref(tool, locale)} target="_blank" rel="noopener">
                     {tool.name}
                   </a>
                 ) : (
                   tool.name
                 )}
               </h3>
-              <p>{tool.summary}</p>
+              <p>{t.tools[tool.id].summary}</p>
               <div class="card-foot">
-                {tool.note && <p class="note">{tool.note}</p>}
+                <p class="note">{t.tools[tool.id].note}</p>
                 {tool.status === 'live' && (
                   <span class="card-actions">
-                    <a class="btn primary small" href={tool.href} target="_blank" rel="noopener">
-                      Open {tool.name.split(' ').slice(-1)[0]?.toLowerCase()} &rarr;
+                    <a class="btn primary small" href={toolHref(tool, locale)} target="_blank" rel="noopener">
+                      {t.tools[tool.id].open} &rarr;
                     </a>
                     {tool.source && (
                       <a
@@ -105,8 +93,8 @@ const principles = [
                         href={tool.source}
                         target="_blank"
                         rel="noopener"
-                        aria-label={`${tool.name} source code on GitHub`}
-                        title="Source code on GitHub"
+                        aria-label={fmt(t.home.products.sourceOf, { name: tool.name })}
+                        title={t.home.products.source}
                       >
                         <svg class="gh" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
                           <path d={GITHUB_MARK} />
@@ -121,21 +109,21 @@ const principles = [
         }
       </ul>
       <p class="idea">
-        Got a problem worth solving? <a class="link" href={idea}>Share an idea &rarr;</a>
+        {t.home.products.idea} <a class="link" href={idea}>{t.home.products.share} &rarr;</a>
       </p>
     </section>
 
     <section class="wrap" aria-labelledby="build-h">
       <div class="section-head">
-        <h2 id="build-h">What we build</h2>
+        <h2 id="build-h">{t.home.build.heading}</h2>
       </div>
       <ul class="pillars">
         {
-          pillars.map(([title, body, icon]) => (
+          t.home.build.pillars.map(([title, body], i) => (
             <li class="glass">
               <span class="icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="20" height="20">
-                  <path d={icon} />
+                  <path d={PILLAR_ICONS[i]} />
                 </svg>
               </span>
               <h3>{title}</h3>
@@ -148,15 +136,15 @@ const principles = [
 
     <section class="wrap" aria-labelledby="how">
       <div class="section-head">
-        <h2 id="how">How we build</h2>
+        <h2 id="how">{t.home.how.heading}</h2>
       </div>
       <ul class="principles">
         {
-          principles.map(([title, body, icon]) => (
+          t.home.how.principles.map(([title, body], i) => (
             <li class="glass">
               <span class="icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="20" height="20">
-                  <path d={icon} />
+                  <path d={PRINCIPLE_ICONS[i]} />
                 </svg>
               </span>
               <h3>{title}</h3>
@@ -169,14 +157,11 @@ const principles = [
 
     <section class="wrap" id="teams" aria-labelledby="teams-h">
       <div class="teams glass">
-        <p class="eyebrow">Work with us</p>
-        <h2 id="teams-h">Engineering AI that holds up in production.</h2>
-        <p>
-          We also build for other teams: multi-agent workflows, retrieval and evals, designed and shipped so they
-          behave the same in production as in the demo.
-        </p>
+        <p class="eyebrow">{t.header.work}</p>
+        <h2 id="teams-h">{t.home.teams.heading}</h2>
+        <p>{t.home.teams.body}</p>
         <div class="actions">
-          <a class="btn primary" href={CALENDLY}>Book a call</a>
+          <a class="btn primary" href={CALENDLY}>{t.home.teams.book}</a>
           <a class="btn" href={`mailto:${EMAIL}`}>{EMAIL}</a>
         </div>
       </div>
@@ -234,6 +219,11 @@ const principles = [
     font-weight: 700;
     line-height: 1.04;
     letter-spacing: -0.035em;
+  }
+
+  /* Indic words run long: at 40px one Tamil word of the headline is wider than a 360px phone. */
+  h1:not(:lang(en)) {
+    font-size: clamp(2.25rem, 7vw, 4.5rem);
   }
 
   .lede {
