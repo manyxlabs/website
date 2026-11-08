@@ -1,5 +1,5 @@
 // Serves the built site as static assets. The free tools (manyxlabs/photo-resizer) live in
-// their own repo and Worker; all of /tools and their other paths are forwarded to it.
+// their own repo and Worker; all of /tools and their other paths, in every language, are forwarded to it.
 {
   "name": "website",
   "main": "worker.ts",
@@ -8,7 +8,30 @@
     "directory": "./dist",
     "not_found_handling": "404-page",
     "html_handling": "auto-trailing-slash",
-    "run_worker_first": ["/tools*", "/photo-size*", "/_resizer/*", "/sitemap-resizer-*"]
+    // Each language's tool paths are listed one by one: a /*/tools* pattern could also match a
+    // page of this site's own under a language prefix. Keep the prefixes in step with src/i18n/locales.ts.
+    "run_worker_first": [
+      "/tools*",
+      "/photo-size*",
+      "/hi/tools*",
+      "/hi/photo-size*",
+      "/bn/tools*",
+      "/bn/photo-size*",
+      "/mr/tools*",
+      "/mr/photo-size*",
+      "/te/tools*",
+      "/te/photo-size*",
+      "/ta/tools*",
+      "/ta/photo-size*",
+      "/gu/tools*",
+      "/gu/photo-size*",
+      "/kn/tools*",
+      "/kn/photo-size*",
+      "/ml/tools*",
+      "/ml/photo-size*",
+      "/_resizer/*",
+      "/sitemap-resizer-*"
+    ]
   },
   // The photo-resizer Worker must be deployed before this one: a deploy fails on a
   // binding to a Worker that does not exist yet.

@@ -1,16 +1,19 @@
 ---
+import { pageLocale } from '../i18n';
 import { EMAIL, FOUNDER, GITHUB } from '../site';
+
+const { t, href } = pageLocale(Astro.url);
 ---
 
 <footer class="wrap">
   <div class="foot">
-    <p>&copy; {new Date().getFullYear()} Manyx Labs, Bengaluru</p>
-    <nav aria-label="Elsewhere">
-      <a href="/tools/">Free tools</a>
-      <a href="/photo-size/">Size guides</a>
+    <p>&copy; {new Date().getFullYear()} {t.footer.place}</p>
+    <nav aria-label={t.footer.nav}>
+      <a href={href('/tools/')}>{t.footer.tools}</a>
+      <a href={href('/photo-size/')}>{t.footer.guides}</a>
       <a href={GITHUB}>GitHub</a>
-      <a href={FOUNDER}>Founder</a>
-      <a href={`mailto:${EMAIL}`}>Email</a>
+      <a href={FOUNDER}>{t.footer.founder}</a>
+      <a href={`mailto:${EMAIL}`}>{t.footer.email}</a>
     </nav>
   </div>
 </footer>
@@ -22,14 +25,15 @@ import { EMAIL, FOUNDER, GITHUB } from '../site';
     gap: 12px 24px;
     justify-content: space-between;
     padding-block: 32px 40px;
-    border-top: 1px solid var(--border);
-    color: var(--muted);
+    border-top: 1px solid rgb(var(--fg) / 0.1);
+    color: rgb(var(--muted));
     font-size: 0.875rem;
   }
 
   nav {
     display: flex;
-    gap: 20px;
+    flex-wrap: wrap;
+    gap: 8px 20px;
   }
 
   nav a {
@@ -37,6 +41,6 @@ import { EMAIL, FOUNDER, GITHUB } from '../site';
   }
 
   nav a:hover {
-    color: var(--text);
+    color: rgb(var(--fg));
   }
 </style>
