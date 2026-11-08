@@ -1,0 +1,457 @@
+---
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { toolHref, tools } from '../../data/tools';
+import { pageLocale } from '../../i18n';
+import { fmt } from '../../i18n/format';
+import { LANG_PARAMS } from '../../i18n/locales';
+import Base from '../../layouts/Base.astro';
+import { organization, products, website } from '../../seo';
+import { CALENDLY, EMAIL } from '../../site';
+
+export const getStaticPaths = () => LANG_PARAMS.map((lang) => ({ params: { lang } }));
+
+const { locale, t } = pageLocale(Astro.url);
+
+// GitHub's mark, from its Octicons set.
+const GITHUB_MARK =
+  'M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z';
+
+// English in every language, like the rest of the mail the maintainer reads.
+const idea = `mailto:${EMAIL}?subject=${encodeURIComponent('Product idea')}`;
+
+// 24px line icons, in the catalogue's order.
+const PILLAR_ICONS = [
+  'M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8zM18 15l.9 2.1L21 18l-2.1.9L18 21l-.9-2.1L15 18l2.1-.9z',
+  'M4 5h16v10H4zM8 19h8M12 15v4',
+  'M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z',
+];
+const PRINCIPLE_ICONS = [
+  'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 5a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z',
+  'M8 11V8a4 4 0 0 1 8 0v3M6 11h12v9H6z',
+  'M5 12.5l4.5 4.5L19 7.5',
+  'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM5.6 5.6l12.8 12.8',
+];
+---
+
+<Base title={t.home.title} description={t.home.description} ogAlt={t.home.ogAlt} schema={[organization, website(locale), products(locale)]}>
+  <Header />
+
+  <main>
+    <section class="wrap hero">
+      <h1 class="text-sheen">{t.home.heading}</h1>
+      <p class="lede reveal" style="--i: 1">{t.home.lede}</p>
+      <div class="actions reveal" style="--i: 2">
+        <a class="btn btn-primary" href="#products">{t.home.seeProducts}</a>
+        <a class="btn btn-glass" href="#teams">{t.header.work} <span aria-hidden="true">&rarr;</span></a>
+      </div>
+    </section>
+
+    <section class="wrap" id="products" aria-labelledby="products-h">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">{t.home.products.eyebrow}</p>
+          <h2 id="products-h">{t.home.products.heading}</h2>
+        </div>
+        <p>{t.home.products.aside}</p>
+      </div>
+      <ul class="products">
+        {
+          tools.map((tool, i) => (
+            <li class="product card glass spotlight reveal" style={`--i: ${i}`}>
+              <span class="top-row">
+                <span class="tile" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path d={tool.icon} />
+                  </svg>
+                </span>
+                <span class="tags">
+                  <span class:list={['chip', 'badge', tool.status]}>{tool.status === 'live' ? t.home.products.live : t.home.products.building}</span>
+                  <span class="chip category">{t.tools[tool.id].category}</span>
+                </span>
+              </span>
+              <h3>
+                {tool.status === 'live' ? (
+                  <a href={toolHref(tool, locale)} target="_blank" rel="noopener">
+                    {tool.name}
+                  </a>
+                ) : (
+                  tool.name
+                )}
+              </h3>
+              <p>{t.tools[tool.id].summary}</p>
+              <div class="card-foot">
+                <p class="note">{t.tools[tool.id].note}</p>
+                {tool.status === 'live' && (
+                  <span class="card-actions">
+                    <a class="btn btn-primary" href={toolHref(tool, locale)} target="_blank" rel="noopener">
+                      {t.tools[tool.id].open} &rarr;
+                    </a>
+                    {tool.source && (
+                      <a
+                        class="btn-icon"
+                        href={tool.source}
+                        target="_blank"
+                        rel="noopener"
+                        aria-label={fmt(t.home.products.sourceOf, { name: tool.name })}
+                        title={t.home.products.source}
+                      >
+                        <svg class="gh" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                          <path d={GITHUB_MARK} />
+                        </svg>
+                      </a>
+                    )}
+                  </span>
+                )}
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="idea">
+        {t.home.products.idea} <a class="link" href={idea}>{t.home.products.share} &rarr;</a>
+      </p>
+    </section>
+
+    <section class="wrap" aria-labelledby="build-h">
+      <div class="section-head">
+        <h2 id="build-h">{t.home.build.heading}</h2>
+      </div>
+      <ul class="pillars">
+        {
+          t.home.build.pillars.map(([title, body], i) => (
+            <li class="card glass spotlight reveal" style={`--i: ${i}`}>
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                  <path d={PILLAR_ICONS[i]} />
+                </svg>
+              </span>
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="wrap" aria-labelledby="how">
+      <div class="section-head">
+        <h2 id="how">{t.home.how.heading}</h2>
+      </div>
+      <ul class="principles">
+        {
+          t.home.how.principles.map(([title, body], i) => (
+            <li class="card glass spotlight reveal" style={`--i: ${i}`}>
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                  <path d={PRINCIPLE_ICONS[i]} />
+                </svg>
+              </span>
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="wrap" id="teams" aria-labelledby="teams-h">
+      <div class="teams glass spotlight reveal">
+        <p class="eyebrow">{t.header.work}</p>
+        <h2 id="teams-h">{t.home.teams.heading}</h2>
+        <p>{t.home.teams.body}</p>
+        <div class="actions">
+          <a class="btn btn-primary" href={CALENDLY}>{t.home.teams.book}</a>
+          <a class="btn btn-glass" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  /* The portfolio's Section: py-20 sm:py-28, with in-page links landing below the floating header. */
+  main > section {
+    padding-block: 40px;
+    scroll-margin-top: 96px;
+  }
+
+  @media (min-width: 640px) {
+    main > section {
+      padding-block: 56px;
+    }
+  }
+
+  .hero {
+    padding-block: 56px 48px;
+  }
+
+  @media (min-width: 640px) {
+    .hero {
+      padding-block: 104px 72px;
+    }
+  }
+
+  h1 {
+    max-width: 16ch;
+    font-size: 3rem;
+    line-height: 1.05;
+  }
+
+  @media (min-width: 640px) {
+    h1 {
+      font-size: 4.5rem;
+    }
+  }
+
+  /* Indic words run long: at 48px one Tamil word of the headline is wider than a 360px phone. */
+  h1:not(:lang(en)) {
+    font-size: 2.25rem;
+  }
+
+  @media (min-width: 640px) {
+    h1:not(:lang(en)) {
+      font-size: 3.75rem;
+    }
+  }
+
+  .hero .lede {
+    max-width: 42rem;
+    margin-top: 24px;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 40px;
+  }
+
+  .section-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 8px 24px;
+  }
+
+  .section-head h2,
+  .teams h2 {
+    font-size: 1.875rem;
+    line-height: 1.2;
+  }
+
+  @media (min-width: 640px) {
+    .section-head h2,
+    .teams h2 {
+      font-size: 2.25rem;
+    }
+  }
+
+  .section-head > p {
+    color: rgb(var(--muted));
+  }
+
+  .eyebrow + h2 {
+    margin-top: 12px;
+  }
+
+  .products,
+  .pillars,
+  .principles {
+    display: grid;
+    gap: 16px;
+    margin: 40px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .products {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  }
+
+  .pillars {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  }
+
+  .principles {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  }
+
+  .product {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* When the chips do not fit beside the tile, they move under it together rather than splitting. */
+  .top-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  /* Neutral tiles: colour is kept for small marks only. */
+  .tile,
+  .icon {
+    display: grid;
+    flex: none;
+    place-items: center;
+    border: 1px solid rgb(var(--fg) / 0.1);
+    background: rgb(var(--fg) / 0.05);
+    color: rgb(var(--fg));
+  }
+
+  .tile {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+  }
+
+  .icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    color: rgb(var(--muted));
+  }
+
+  :is(.tile, .icon) svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .tags {
+    display: flex;
+    gap: 8px;
+  }
+
+  /* The status dot is one of the accent's small marks. */
+  .badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: rgb(var(--muted));
+  }
+
+  .badge.live::before {
+    background: rgb(var(--accent));
+    box-shadow: 0 0 8px rgb(var(--accent) / 0.8);
+  }
+
+  h3 {
+    font-size: 1.125rem;
+  }
+
+  .product h3 {
+    font-size: 1.25rem;
+  }
+
+  .product h3 a {
+    text-decoration: none;
+  }
+
+  .product h3 a:hover {
+    text-decoration: underline;
+  }
+
+  .product > p,
+  .pillars p,
+  .principles p {
+    margin-top: 8px;
+    color: rgb(var(--muted));
+    line-height: 1.625;
+  }
+
+  .card-foot {
+    display: grid;
+    gap: 16px;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 24px;
+  }
+
+  .note {
+    color: rgb(var(--muted));
+    font-size: 0.875rem;
+  }
+
+  .card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .gh {
+    fill: currentColor;
+  }
+
+  .idea {
+    margin-top: 32px;
+    color: rgb(var(--muted));
+    text-align: center;
+  }
+
+  .link {
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .link:hover {
+    text-decoration: underline;
+  }
+
+  /* The portfolio's contact card, with its accent hairline along the top edge. */
+  .teams {
+    overflow: hidden;
+    padding: 64px 24px;
+    border-radius: 32px;
+    text-align: center;
+  }
+
+  @media (min-width: 640px) {
+    .teams {
+      padding-inline: 64px;
+    }
+  }
+
+  .teams > .eyebrow::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 66%;
+    height: 1px;
+    translate: -50% 0;
+    background: linear-gradient(90deg, transparent, rgb(var(--accent) / 0.8), transparent);
+  }
+
+  .teams h2 {
+    max-width: 20ch;
+    margin-inline: auto;
+  }
+
+  .teams p:not(.eyebrow) {
+    max-width: 36rem;
+    margin: 20px auto 0;
+    color: rgb(var(--muted));
+    font-size: 1.125rem;
+    line-height: 1.625;
+  }
+
+  .teams .actions {
+    justify-content: center;
+  }
+</style>
