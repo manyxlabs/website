@@ -18,7 +18,6 @@ export default {
     nav: 'অন্যান্য লিঙ্ক',
     tools: 'ফ্রি টুল',
     guides: 'সাইজ গাইড',
-    founder: 'প্রতিষ্ঠাতা',
     email: 'ইমেল',
   },
 

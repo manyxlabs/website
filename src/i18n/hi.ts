@@ -18,7 +18,6 @@ export default {
     nav: 'और जगहें',
     tools: 'फ़्री टूल',
     guides: 'साइज़ गाइड',
-    founder: 'फ़ाउंडर',
     email: 'ईमेल',
   },
 

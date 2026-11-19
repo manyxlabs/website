@@ -18,7 +18,6 @@ export default {
     nav: 'બીજે ક્યાંક',
     tools: 'ફ્રી ટૂલ્સ',
     guides: 'સાઇઝ ગાઇડ',
-    founder: 'સ્થાપક',
     email: 'ઇમેઇલ',
   },
 

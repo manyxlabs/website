@@ -1,7 +1,7 @@
 import { toolHref, tools } from './data/tools';
 import { catalogues } from './i18n';
 import type { Locale } from './i18n/locales';
-import { EMAIL, FOUNDER, GITHUB } from './site';
+import { EMAIL, GITHUB } from './site';
 
 const SITE = 'https://www.manyxlabs.com';
 
@@ -16,12 +16,6 @@ export const organization = {
   email: EMAIL,
   address: { '@type': 'PostalAddress', addressLocality: 'Bengaluru', addressCountry: 'IN' },
   contactPoint: { '@type': 'ContactPoint', contactType: 'customer support', email: EMAIL },
-  founder: {
-    '@type': 'Person',
-    name: 'Manyx Labs',
-    url: FOUNDER,
-    sameAs: ['https://github.com/manyxlabs', 'https://github.com/manyxlabs', 'https://github.com/manyxlabs'],
-  },
   sameAs: [GITHUB],
 };
 

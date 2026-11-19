@@ -22,7 +22,6 @@ const en = {
     nav: 'Elsewhere',
     tools: 'Free tools',
     guides: 'Size guides',
-    founder: 'Founder',
     email: 'Email',
   },
 

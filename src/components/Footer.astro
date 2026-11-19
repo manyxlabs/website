@@ -1,6 +1,6 @@
 ---
 import { pageLocale } from '../i18n';
-import { EMAIL, FOUNDER, GITHUB } from '../site';
+import { EMAIL, GITHUB } from '../site';
 
 const { t, href } = pageLocale(Astro.url);
 ---
@@ -12,7 +12,6 @@ const { t, href } = pageLocale(Astro.url);
       <a href={href('/tools/')}>{t.footer.tools}</a>
       <a href={href('/photo-size/')}>{t.footer.guides}</a>
       <a href={GITHUB}>GitHub</a>
-      <a href={FOUNDER}>{t.footer.founder}</a>
       <a href={`mailto:${EMAIL}`}>{t.footer.email}</a>
     </nav>
   </div>

@@ -18,7 +18,6 @@ export default {
     nav: 'इतरत्र',
     tools: 'मोफत टूल्स',
     guides: 'साइज गाइड',
-    founder: 'संस्थापक',
     email: 'ईमेल',
   },
 

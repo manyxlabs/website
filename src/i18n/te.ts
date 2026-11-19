@@ -18,7 +18,6 @@ export default {
     nav: 'ఇతర లింక్‌లు',
     tools: 'ఉచిత టూల్స్',
     guides: 'సైజ్ గైడ్‌లు',
-    founder: 'ఫౌండర్',
     email: 'ఈమెయిల్',
   },
 

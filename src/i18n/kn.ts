@@ -18,7 +18,6 @@ export default {
     nav: 'ಇತರೆಡೆ',
     tools: 'ಉಚಿತ ಟೂಲ್‌ಗಳು',
     guides: 'ಗಾತ್ರದ ಗೈಡ್‌ಗಳು',
-    founder: 'ಸಂಸ್ಥಾಪಕ',
     email: 'ಇಮೇಲ್',
   },
 

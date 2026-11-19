@@ -18,7 +18,6 @@ export default {
     nav: 'മറ്റിടങ്ങളിൽ',
     tools: 'സൗജന്യ ടൂളുകൾ',
     guides: 'സൈസ് ഗൈഡുകൾ',
-    founder: 'സ്ഥാപകൻ',
     email: 'ഇമെയിൽ',
   },
 

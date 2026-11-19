@@ -7,7 +7,7 @@ import { fmt } from '../../i18n/format';
 import { LANG_PARAMS } from '../../i18n/locales';
 import Base from '../../layouts/Base.astro';
 import { organization, products, website } from '../../seo';
-import { CALENDLY, EMAIL } from '../../site';
+import { EMAIL } from '../../site';
 
 export const getStaticPaths = () => LANG_PARAMS.map((lang) => ({ params: { lang } }));
 
@@ -161,7 +161,7 @@ const PRINCIPLE_ICONS = [
         <h2 id="teams-h">{t.home.teams.heading}</h2>
         <p>{t.home.teams.body}</p>
         <div class="actions">
-          <a class="btn btn-primary" href={CALENDLY}>{t.home.teams.book}</a>
+          <a class="btn btn-primary" href={`mailto:${EMAIL}`}>{t.home.teams.book}</a>
           <a class="btn btn-glass" href={`mailto:${EMAIL}`}>{EMAIL}</a>
         </div>
       </div>
